@@ -1,5 +1,5 @@
 // Replace 'https://your-backend-app.herokuapp.com' with your actual Heroku app URL
-const backendUrl = 'https://your-backend-app.herokuapp.com';
+const backendUrl = 'https://vikasvarahala.github.io/vivatriva_vindustry/';
 
 document.getElementById('signinButton').addEventListener('click', async () => {
     const username = document.getElementById('username').value;
