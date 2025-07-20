@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: #2C2945;
+        display: grid;
+
+        justify-content: center;
+    }
+
+    .container2 {
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        display: grid;
+        width: 700px;
+        border: solid;
+        background-color: #5A5D8A;
+        border: solid rgb(213, 147, 213) 5px;
+        box-shadow: 0 0 30px 10px rgb(199, 113, 199);
+
+
+    }
+
+    .headding {
+        text-align: center;
+        color: #a9abc4;
+
+
+
+    }
+
+
+
+
+    .box {
+        display: inline-block;
+        padding: 10px;
+        border: solid;
+        margin: 10px;
+        height: 150px;
+        width: 150px;
+        border-radius: 10px;
+        white-space: wrap;
+
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .box:hover {
+        transform: scale(1.1);
+        background-color: slateblue;
+
+    }
+
+
+    .sh {
+        margin: 10px;
+        padding: 3px;
+        color: white;
+        background-color: purple;
+        width: 300px;
+        text-align: center;
+        border-radius: 10px;
+        font-family: "Raleway", sans-serif;
+
+    }
+
+    .boxa1 {
+        grid-column-start: 1;
+        text-align: center;
+        background-image: url('https://www.discoverengineering.org/wp-content/uploads/2023/12/mj_11223_3.jpg');
+    }
+
+    .boxa2 {
+        background-image: url(https://continuinged.utah.edu/_resources/images/_d1/anc/featured-images/math121.jpg);
+        text-align: center;
+        color: white;
+        grid-column-start: 2;
+    }
+
+    .boxa3 {
+        grid-column-start: 3;
+        text-align: center;
+        color: whitesmoke;
+        background-image: url(https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop);
+    }
+
+    .boxa4 {
+        grid-column-start: 1;
+        text-align: center;
+        color: white;
+        background-image: url(https://www.oist.jp/sites/default/files/styles/background_image_xl_low_1x/public/2024-04/OISTAPDEheroimage%20copy.jpg?h=9a62d6e1&itok=Z4886Eev);
+    }
+
+    
+</style>
+
+<body>
+    <div class="headding">
+        <h1> VivaTrivia</h1>
+
+    </div>
+    <h3 class="sh">
+        PHYSICS
+    </h3>
+    <div class="container2">
+
+        <div id="algebra" class="box boxa1">
+            <img src="https://media.licdn.com/dms/image/v2/D4D0BAQErjjzdiNqbbQ/company-logo_200_200/company-logo_200_200/0/1688543962406?e=2147483647&v=beta&t=-gL0RH6RCAyaw7SuZ1qKorBeNFHBu46CInexS6w9sm0" alt="mech" height="50px">
+            <h3>Algibra</h3>
+
+
+        </div>
+
+        <div id ="calcules" class="box boxa2">
+            <img src="https://i.pinimg.com/736x/04/40/86/044086c1dc88760916b63d9de814378e.jpg"
+                alt="workenergy" height="50px">
+            <h3>
+                Calculus
+            </h3>
+        </div>
+        <div id="coordinates" class="box boxa3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaDBKRlokPAHmZOMu1kC4O_xK_ToW8_xG-wOtMjWkfffpxrZiFwDg7e4P1tF7K-X_sWGo&usqp=CAU" alt="Thermodynamics"
+                height="50px">
+            <h3>Cordinates</h3>
+        </div>
+
+        <div id="diff" class="box boxa4">
+            <img src="https://www.pngfind.com/pngs/m/132-1320271_general-differential-equation-ordinary-differential-equations-graph-hd.png" alt="electromagnetic" height="50px">
+            <h3>
+               Differential Equations
+            </h3>
+        </div>
+
+
+    </div>
+  <script>
+    let algebra = document.getElementById("algebra");
+    algebra.addEventListener("click",function(){
+        window.location.href = "alzebra.html";
+    });
+
+    let calcules = document.getElementById("calcules");
+    calcules.addEventListener("click",function(){
+        window.location.href = "calcules.html"
+    })
+
+    let coordinates = document.getElementById("coordinates");
+    coordinates.addEventListener("click",function(){
+        window.location.href = "coordinate.html";
+    });
+
+    let diff = document.getElementById("diff");
+    diff.addEventListener("click",function(){
+        window.location.href = "differ.html";
+    });
+
+
+
+
+  </script>
+
+</body>
+
+</html>

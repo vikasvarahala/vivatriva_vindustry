@@ -1,0 +1,66 @@
+body {
+    background-color: blueviolet;
+    font-family: sans-serif; /* Added for better default font */
+}
+
+.heading {
+    text-align: center;
+    color: white;
+    font-size: xx-large;
+    padding-top: 20px;
+}
+
+.login {
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inp {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    row-gap: 10px;
+}
+
+input {
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    height: 30px;
+    width: 300px;
+    border: 2px solid rgb(74, 181, 74);
+    box-sizing: border-box; /* Important for consistent sizing */
+    margin: 0;
+}
+
+.button {
+    padding: 20px;
+}
+
+button {
+    background-color: rgb(197, 118, 197);
+    padding: 10px;
+    width: 300px;
+    border-radius: 10px;
+    color: aliceblue;
+    border: none;
+    font-size: 16px;
+    cursor: pointer; /* Makes the button look clickable */
+}
+
+button:hover {
+    opacity: 0.9; /* Adds a nice hover effect */
+}
+
+.button0 p {
+    color: white;
+}
+
+.button0 a {
+    color: aliceblue;
+    font-weight: bold;
+}

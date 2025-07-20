@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIVA-TRIVIA Physics Quiz: Modern Physics (JEE Level)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Body & Page Container Styling --- */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color:  #2C2945;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align top */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .main-container {
+           background-color:#5A5D8A;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Page Sections --- */
+        .page-section {
+            padding: 30px 40px;
+        }
+
+        /* --- Login Page Styling --- */
+        #login-container {
+            text-align: center;
+        }
+        #login-container h1 {
+            font-family: 'Merriweather', serif;
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        #login-container p {
+            color: #f0f2f5;
+            margin-bottom: 30px;
+        }
+        #name-input {
+            width: 80%;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        #start-quiz-btn {
+            background-color: #3498db;
+            color: white;
+            font-size: 1.1em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-quiz-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* --- Quiz Container Styling --- */
+        #quiz-container { display: none; }
+        .quiz-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px 30px;
+        }
+        .quiz-header-content {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+        }
+
+        .quiz-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        #score-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #2c3e50;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+        #progress-text {
+            font-size: 0.9em;
+            color: #f0f2f5;
+            margin-bottom: 10px;
+        }
+        #question-text {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .options-list {
+            list-style-type: none; padding: 0; margin: 0;
+        }
+        .option-btn {
+            display: block; width: 100%;background-color:#a9abc4;
+            border: 2px solid #e0e0e0; color: #333; padding: 15px;
+            margin-bottom: 10px; text-align: left; font-size: 1em;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #e9ecef; border-color: #3498db;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        .option-btn.selected {
+            background-color: #a3bde3;
+            border-color: #3498db;
+            font-weight: bold;
+        }
+        .option-btn.correct {
+            background-color: #d4edda; border-color: #28a745;
+            color: #155724; font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da; border-color: #dc3545;
+            color: #721c24; font-weight: bold;
+        }
+
+
+        /* --- Solution Styling --- */
+        .solution-container { /* Renamed for review page */
+            background-color: #3e4061;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+        .solution-container h3 {
+            margin-top: 0;
+            color: #2ecc71;
+            font-family: 'Merriweather', serif;
+        }
+        .solution-text p, .solution-text li, .detailed-solution p, .detailed-solution li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #ecf0f1;
+        }
+        .solution-text strong, .detailed-solution strong {
+            color: #f1c40f;
+        }
+        .solution-text code, .detailed-solution code {
+            background-color: #2c3e50;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
+        .quiz-footer {
+            padding: 20px 30px;
+            text-align: right;
+            border-top: 1px solid #7a7da9;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .quiz-btn {
+            color: white; border: none;
+            padding: 10px 25px; font-size: 1em; border-radius: 8px;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .quiz-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #submit-btn { background-color: #3498db; }
+        #submit-btn:hover:not(:disabled) { background-color: #2980b9; }
+
+        #show-answer-btn { background-color: #f39c12; }
+        #show-answer-btn:hover:not(:disabled) { background-color: #e67e22; }
+
+        #next-btn { background-color: #2ecc71; display: none; }
+        #next-btn:hover { background-color: #27ae60; }
+
+
+        /* --- Results Page Styling --- */
+        #results-container {
+            display: none;
+            text-align: center;
+            padding: 30px 40px;
+            color: #ffffff;
+        }
+        #results-container h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        #final-score-text {
+             font-size: 1.8em;
+             font-weight: bold;
+             color: #3498db;
+             margin-bottom: 30px;
+        }
+        #restart-quiz-btn {
+            background-color: #e74c3c;
+            color: white; font-size: 1.1em; padding: 15px 40px;
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 30px;
+        }
+        #restart-quiz-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* --- Review Section Styling --- */
+        #review-section {
+            text-align: left;
+            margin-top: 20px;
+        }
+        #review-section h3 {
+            border-bottom: 2px solid #7a7da9;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .review-item {
+            background-color: #4b4e78;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .review-question {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 0;
+            color: #ffffff;
+        }
+        .review-user-answer {
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .review-user-answer.correct { background-color: #d4edda; color: #155724; }
+        .review-user-answer.incorrect { background-color: #f8d7da; color: #721c24; }
+        .review-user-answer.skipped { background-color: #fff3cd; color: #856404; }
+
+        .review-correct-answer {
+            color: #d4edda;
+            font-style: italic;
+        }
+        .solution-toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .solution-toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .detailed-solution {
+             border-top: 1px solid #7a7da9;
+             margin-top: 15px;
+             padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- ===== 1. LOGIN PAGE ===== -->
+        <div class="page-section" id="login-container">
+            <h1>VIVA-TRIVIA</h1>
+            <p>Enter your name to begin the<br><strong>Modern Physics Quiz (JEE Level)</strong></p>
+            <input type="text" id="name-input" placeholder="Your Full Name" required>
+            <br>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </div>
+
+        <!-- ===== 2. QUIZ PAGE ===== -->
+        <div id="quiz-container">
+            <div class="quiz-header">
+                 <div class="quiz-header-content">
+                    <h1>Modern Physics</h1>
+                    <div id="score-display">Score: 0</div>
+                </div>
+            </div>
+            <div class="page-section">
+                <p id="progress-text">Question 1 of 10</p>
+                <h2 id="question-text">Loading question...</h2>
+                <ul class="options-list" id="options-list"></ul>
+
+                <div id="solution-container" class="solution-container" style="display: none;">
+                    <h3>Solution:</h3>
+                    <div id="solution-text" class="solution-text"></div>
+                </div>
+
+            </div>
+            <div class="quiz-footer">
+                <button id="show-answer-btn" class="quiz-btn">Show Answer</button>
+                <button id="submit-btn" class="quiz-btn">Submit</button>
+                <button id="next-btn" class="quiz-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- ===== 3. RESULTS PAGE ===== -->
+        <div class="page-section" id="results-container">
+            <h2>Quiz Complete!</h2>
+            <p id="final-score-text">Your Final Score: 0 / 0</p>
+            <button id="restart-quiz-btn">Try Again</button>
+            <div id="review-section">
+                <!-- Review content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionBank = [
+            {
+                question: "In the photoelectric effect, if the intensity of incident light is doubled while keeping the frequency constant, the stopping potential will:",
+                options: ["Be doubled", "Be halved", "Remain unchanged", "Become zero"],
+                answer: "Remain unchanged",
+                solution: "<p>This question tests the core concepts of the photoelectric effect.</p>" +
+                          "<p><strong>1. Einstein's Photoelectric Equation:</strong> <code>K_max = hf - φ</code>, where K_max is the maximum kinetic energy of the emitted electrons, hf is the energy of the incident photon, and φ is the work function of the metal.</p>" +
+                          "<p><strong>2. Stopping Potential (V₀):</strong> The stopping potential is the voltage required to stop the most energetic electrons. It's directly related to K_max by <code>K_max = eV₀</code>, where 'e' is the elementary charge.</p>" +
+                          "<p>Therefore, <code>eV₀ = hf - φ</code>. This shows that the stopping potential <strong>depends only on the frequency (f) of the incident light</strong> and the work function (φ) of the material, not on the intensity.</p>" +
+                          "<p><strong>3. Role of Intensity:</strong> Intensity of light is related to the number of photons incident per unit area per unit time. Doubling the intensity means doubling the number of photons, which will double the number of emitted electrons (the photoelectric current), but it does not change the energy of each individual photon (hf). Since the energy of the most energetic electrons (K_max) doesn't change, the stopping potential remains unchanged.</p>"
+            },
+            {
+                question: "The radius of the first permitted Bohr orbit for the electron in a hydrogen atom is 0.53 Å. The radius of the first orbit for a singly ionized helium atom (He⁺) is:",
+                options: ["0.265 Å", "0.53 Å", "1.06 Å", "0.133 Å"],
+                answer: "0.265 Å",
+                solution: "<p>The radius of the nth Bohr orbit for a hydrogen-like atom is given by the formula: <strong>r_n = (n² / Z) * a₀</strong>, where a₀ is the Bohr radius (0.53 Å).</p>" +
+                          "<p><strong>1. Identify the parameters:</strong></p>" +
+                          "<ul><li>We are looking for the first orbit, so the principal quantum number <strong>n = 1</strong>.</li>" +
+                          "<li>For a Hydrogen atom (H), the atomic number Z = 1. We are given r₁ for Hydrogen is a₀ = 0.53 Å.</li>" +
+                          "<li>For a singly ionized Helium atom (He⁺), there is only one electron left, so it is a hydrogen-like atom. The atomic number of Helium is <strong>Z = 2</strong>.</li></ul>" +
+                          "<p><strong>2. Apply the formula for He⁺:</strong></p>" +
+                          "<p><code>r_n(He⁺) = (n² / Z) * a₀</code></p>" +
+                          "<p><code>r₁(He⁺) = (1² / 2) * (0.53 Å)</code></p>" +
+                          "<p><strong>3. Calculate the result:</strong></p>" +
+                          "<p><code>r₁(He⁺) = (1/2) * 0.53 Å = 0.265 Å</code>.</p>"
+            },
+            {
+                question: "An electron is accelerated through a potential difference of 100 V. Its de Broglie wavelength is approximately:",
+                options: ["1.23 Å", "12.3 Å", "0.123 Å", "0.5 Å"],
+                answer: "1.23 Å",
+                solution: "<p>The de Broglie wavelength (λ) is given by <code>λ = h/p</code>, where p is the momentum. For an electron accelerated through a potential V, we can use a direct shortcut formula.</p>" +
+                          "<p><strong>1. Deriving the Shortcut:</strong></p>" +
+                          "<ul><li>The kinetic energy gained is <code>K = eV</code>.</li>" +
+                          "<li>Momentum <code>p = √(2mK) = √(2meV)</code>.</li>" +
+                          "<li><code>λ = h / √(2meV)</code>.</li>" +
+                          "<li>Plugging in the constants (h, m, e) gives the useful formula: <strong>λ(in Å) ≈ 12.27 / √V</strong>, where V is in Volts.</li></ul>" +
+                          "<p><strong>2. Apply the formula:</strong></p>" +
+                          "<p>Given the potential difference V = 100 V.</p>" +
+                          "<p><code>λ ≈ 12.27 / √100</code></p>" +
+                          "<p><strong>3. Calculate the wavelength:</strong></p>" +
+                          "<p><code>λ ≈ 12.27 / 10 = 1.227 Å</code>.</p>" +
+                          "<p>The closest answer is 1.23 Å.</p>"
+            },
+            {
+                question: "The half-life of a radioactive sample is 30 days. The time taken for 3/4 of the sample to decay is:",
+                options: ["30 days", "45 days", "60 days", "75 days"],
+                answer: "60 days",
+                solution: "<p>This problem can be solved by understanding the concept of half-life.</p>" +
+                          "<p><strong>1. Fraction Remaining:</strong> If 3/4 of the sample has decayed, the fraction of the sample remaining is <code>N/N₀ = 1 - 3/4 = 1/4</code>.</p>" +
+                          "<p><strong>2. Relating Fraction to Half-Lives:</strong> The fraction remaining is given by <code>N/N₀ = (1/2)^n</code>, where 'n' is the number of half-lives that have passed.</p>" +
+                          "<p><code>1/4 = (1/2)^n</code></p>" +
+                          "<p><code>(1/2)² = (1/2)^n</code>. Therefore, <strong>n = 2</strong> half-lives have passed.</p>" +
+                          "<p><strong>3. Calculate Total Time:</strong></p>" +
+                          "<p>The total time is the number of half-lives multiplied by the duration of one half-life (T₁/₂).</p>" +
+                          "<p><code>Time = n * T₁/₂ = 2 * 30 days = 60 days</code>.</p>"
+            },
+            {
+                question: "In a nuclear reactor, heavy water (D₂O) is primarily used as a:",
+                options: ["Fuel", "Coolant", "Moderator", "Control rod"],
+                answer: "Moderator",
+                solution: "<p>This question tests knowledge of the components of a nuclear reactor.</p>" +
+                          "<p><strong>1. Function of a Moderator:</strong> Nuclear fission of Uranium-235 produces fast-moving neutrons. However, the probability of these neutrons causing further fission is much higher if they are slowed down. The material used to slow down these fast neutrons without absorbing them is called a moderator.</p>" +
+                          "<p><strong>2. Why Heavy Water:</strong> A moderator should be a light nucleus so that when a heavy neutron collides with it, a significant amount of kinetic energy is transferred (similar to a billiard ball collision). Hydrogen is ideal, but it also absorbs neutrons to become deuterium. Heavy water (D₂O) contains deuterium, which is also a light nucleus but has a much lower probability of absorbing neutrons compared to ordinary hydrogen. Therefore, heavy water is an excellent moderator.</p>" +
+                          "<p><strong>Other Roles:</strong></p>" +
+                          "<ul><li><strong>Fuel:</strong> Usually Uranium-235 or Plutonium-239.</li><li><strong>Coolant:</strong> Transfers heat away from the reactor core (water, D₂O, or molten salt can also serve this purpose).</li><li><strong>Control Rods:</strong> Made of neutron-absorbing material (like Cadmium or Boron) to control the rate of reaction.</li></ul>"
+            },
+            {
+                question: "The binding energy per nucleon of a deuteron (²₁H) and a helium nucleus (⁴₂He) are 1.1 MeV and 7.0 MeV respectively. When two deuterons fuse to form a helium nucleus, the energy released is:",
+                options: ["11.8 MeV", "23.6 MeV", "25.8 MeV", "30.2 MeV"],
+                answer: "23.6 MeV",
+                solution: "<p>The energy released in a nuclear reaction is the difference between the total binding energy of the products and the total binding energy of the reactants.</p>" +
+                          "<p><strong>1. The Fusion Reaction:</strong></p>" +
+                          "<p><code>²₁H + ²₁H  →  ⁴₂He + Energy</code></p>" +
+                          "<p><strong>2. Calculate Total Binding Energy of Reactants:</strong></p>" +
+                          "<ul><li>Reactants are two deuterons.</li><li>Binding energy of one deuteron = (Binding energy per nucleon) * (Number of nucleons) = 1.1 MeV * 2 = 2.2 MeV.</li>" +
+                          "<li>Total BE of reactants = 2 * (2.2 MeV) = 4.4 MeV.</li></ul>" +
+                          "<p><strong>3. Calculate Total Binding Energy of Product:</strong></p>" +
+                          "<ul><li>Product is one helium nucleus.</li>" +
+                          "<li>Binding energy of helium = (Binding energy per nucleon) * (Number of nucleons) = 7.0 MeV * 4 = 28.0 MeV.</li></ul>" +
+                          "<p><strong>4. Calculate Energy Released (Q-value):</strong></p>" +
+                          "<p><code>Energy Released = (Total BE of Products) - (Total BE of Reactants)</code></p>" +
+                          "<p><code>Q = 28.0 MeV - 4.4 MeV = 23.6 MeV</code>.</p>"
+            },
+            {
+                question: "An X-ray tube operates at an accelerating voltage of 40 kV. The shortest wavelength of the X-rays produced (cutoff wavelength) is: (h ≈ 6.63x10⁻³⁴ J·s, c ≈ 3x10⁸ m/s, e ≈ 1.6x10⁻¹⁹ C)",
+                options: ["0.155 Å", "0.311 Å", "0.622 Å", "1.24 Å"],
+                answer: "0.311 Å",
+                solution: "<p>The shortest wavelength (λ_min) corresponds to the maximum energy of an X-ray photon, which occurs when an accelerated electron converts all its kinetic energy into a single photon.</p>" +
+                          "<p><strong>1. Energy Conservation:</strong> The kinetic energy of the electron is <code>K = eV</code>, where V is the accelerating voltage. The energy of the photon is <code>E = hf = hc/λ</code>.</p>" +
+                          "<p>For the shortest wavelength, <code>eV = hc/λ_min</code>.</p>" +
+                          "<p><strong>2. Shortcut Formula:</strong> Rearranging gives <code>λ_min = hc/eV</code>. Plugging in the constants gives a very useful formula:</p>" +
+                          "<p><strong>λ_min(in Å) ≈ 12400 / V(in Volts)</strong></p>" +
+                          "<p><strong>3. Apply the formula:</strong></p>" +
+                          "<p>Given V = 40 kV = 40,000 V.</p>" +
+                          "<p><code>λ_min ≈ 12400 / 40000 Å</code></p>" +
+                          "<p><strong>4. Calculate the wavelength:</strong></p>" +
+                          "<p><code>λ_min ≈ 124 / 400 Å = 31 / 100 Å = 0.31 Å</code>.</p>" +
+                          "<p>The closest answer is 0.311 Å.</p>"
+            },
+            {
+                question: "In the nuclear reaction: ²³⁸₉₂U → ²³⁴₉₀Th + X, what is the particle X?",
+                options: ["A proton (¹₁p)", "A beta particle (⁰₋₁e)", "An alpha particle (⁴₂He)", "A gamma ray (γ)"],
+                answer: "An alpha particle (⁴₂He)",
+                solution: "<p>In any nuclear reaction, both the mass number (superscript) and the atomic number (subscript) must be conserved.</p>" +
+                          "<p><strong>1. The Reaction:</strong></p>" +
+                          "<p><code>²³⁸₉₂U → ²³⁴₉₀Th + ᴬ_ZX</code></p>" +
+                          "<p>where A is the mass number and Z is the atomic number of the unknown particle X.</p>" +
+                          "<p><strong>2. Conserve Mass Number (Top number):</strong></p>" +
+                          "<p><code>238 = 234 + A</code></p>" +
+                          "<p><code>A = 238 - 234 = 4</code>.</p>" +
+                          "<p><strong>3. Conserve Atomic Number (Bottom number):</strong></p>" +
+                          "<p><code>92 = 90 + Z</code></p>" +
+                          "<p><code>Z = 92 - 90 = 2</code>.</p>" +
+                          "<p><strong>4. Identify the Particle:</strong></p>" +
+                          "<p>The particle X has a mass number of 4 and an atomic number of 2. This is the nucleus of a helium atom, which is known as an <strong>alpha particle (⁴₂He)</strong>.</p>"
+            },
+            {
+                question: "Which of the following logic gates is a universal gate?",
+                options: ["AND", "OR", "NOT", "NAND"],
+                answer: "NAND",
+                solution: "<p><strong>1. Definition of a Universal Gate:</strong> A universal gate is a logic gate that can be used to implement any other type of logic gate (like AND, OR, NOT) without needing any other type of gate.</p>" +
+                          "<p><strong>2. The Universal Gates:</strong> There are two universal gates: <strong>NAND</strong> and <strong>NOR</strong>.</p>" +
+                          "<p><strong>3. Implementation Example (NAND):</strong></p>" +
+                          "<ul><li><strong>NOT Gate:</strong> If you tie the two inputs of a NAND gate together, it acts as a NOT gate. (A NAND A = NOT A).</li>" +
+                          "<li><strong>AND Gate:</strong> An AND gate can be made by following a NAND gate with a NOT gate (which is another NAND gate). ( (A NAND B) NAND (A NAND B) = A AND B ).</li>" +
+                          "<li><strong>OR Gate:</strong> An OR gate can be made by inverting the inputs and then feeding them into a NAND gate (De Morgan's laws). ( (NOT A) NAND (NOT B) = A OR B ).</li></ul>" +
+                          "<p>Since all basic logic functions can be constructed from NAND gates alone, it is a universal gate.</p>"
+            },
+            {
+                question: "The energy equivalent of 1 gram of a substance is:",
+                options: ["3 x 10¹⁰ J", "3 x 10¹³ J", "9 x 10¹³ J", "9 x 10¹⁶ J"],
+                answer: "9 x 10¹³ J",
+                solution: "<p>This is a direct application of Einstein's mass-energy equivalence principle.</p>" +
+                          "<p><strong>1. Einstein's Equation:</strong></p>" +
+                          "<p><code>E = mc²</code>, where E is energy, m is mass, and c is the speed of light.</p>" +
+                          "<p><strong>2. Identify Values in SI Units:</strong></p>" +
+                          "<ul><li>Mass (m) = 1 gram = 1 x 10⁻³ kg.</li>" +
+                          "<li>Speed of light (c) ≈ 3 x 10⁸ m/s.</li></ul>" +
+                          "<p><strong>3. Substitute and Calculate:</strong></p>" +
+                          "<p><code>E = (1 x 10⁻³ kg) * (3 x 10⁸ m/s)²</code></p>" +
+                          "<p><code>E = 10⁻³ * (9 x 10¹⁶) J</code></p>" +
+                          "<p><code>E = 9 x 10¹³ J</code>.</p>"
+            }
+        ];
+
+
+        // DOM Elements
+        const loginContainer = document.getElementById('login-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nameInput = document.getElementById('name-input');
+        const questionTextEl = document.getElementById('question-text');
+        const progressTextEl = document.getElementById('progress-text');
+        const optionsListEl = document.getElementById('options-list');
+        const solutionContainer = document.getElementById('solution-container');
+        const solutionTextEl = document.getElementById('solution-text');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const finalScoreText = document.getElementById('final-score-text');
+        const reviewSection = document.getElementById('review-section');
+
+        // State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswerBtn = null;
+        let userAnswers = [];
+
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        showAnswerBtn.addEventListener('click', showSolution);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        restartQuizBtn.addEventListener('click', startQuiz);
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            resultsContainer.style.display = 'none';
+            loginContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            progressTextEl.innerText = `Question ${currentQuestionIndex + 1} of ${questionBank.length}`;
+            questionTextEl.innerText = currentQuestion.question;
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', selectAnswer);
+                optionsListEl.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            solutionContainer.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            showAnswerBtn.style.display = 'inline-block';
+            showAnswerBtn.disabled = false;
+            nextBtn.style.display = 'none';
+            selectedAnswerBtn = null;
+
+            while (optionsListEl.firstChild) {
+                optionsListEl.removeChild(optionsListEl.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            if (selectedAnswerBtn) {
+                selectedAnswerBtn.classList.remove('selected');
+            }
+            selectedAnswerBtn = e.target;
+            selectedAnswerBtn.classList.add('selected');
+            submitBtn.disabled = false;
+        }
+
+        function checkAnswer() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            const isCorrect = selectedAnswerBtn.innerText === currentQuestion.answer;
+            
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: selectedAnswerBtn.innerText,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                score++;
+                selectedAnswerBtn.classList.add('correct');
+            } else {
+                selectedAnswerBtn.classList.add('incorrect');
+                highlightCorrectAnswer();
+            }
+            scoreDisplay.innerText = `Score: ${score}`;
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function showSolution() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: 'Skipped (Viewed Answer)',
+                isCorrect: false
+            });
+
+            solutionTextEl.innerHTML = currentQuestion.solution;
+            solutionContainer.style.display = 'block';
+            highlightCorrectAnswer();
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+        
+        function highlightCorrectAnswer() {
+            const correctAnswer = questionBank[currentQuestionIndex].answer;
+             Array.from(optionsListEl.children).forEach(button => {
+                if (button.innerText === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+
+        function disableAllOptions() {
+            Array.from(optionsListEl.children).forEach(button => button.disabled = true);
+            showAnswerBtn.disabled = true;
+            submitBtn.disabled = true;
+        }
+
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questionBank.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            finalScoreText.innerText = `Your Final Score: ${score} / ${questionBank.length}`;
+            generateReview();
+        }
+
+        function generateReview() {
+            reviewSection.innerHTML = '<h3>Review Your Answers</h3>'; // Clear previous review
+            userAnswers.forEach((result, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+
+                let userAnswerHTML = '';
+                if (result.userChoice === 'Skipped (Viewed Answer)') {
+                    userAnswerHTML = `<p class="review-user-answer skipped">Your Action: ${result.userChoice}</p>`;
+                } else {
+                    const status = result.isCorrect ? 'Correct' : 'Incorrect';
+                    const cssClass = result.isCorrect ? 'correct' : 'incorrect';
+                    userAnswerHTML = `<p class="review-user-answer ${cssClass}">Your Answer: ${result.userChoice} (${status})</p>`;
+                }
+
+                reviewItem.innerHTML = `
+                    <p class="review-question">${index + 1}. ${result.question}</p>
+                    ${userAnswerHTML}
+                    <p class="review-correct-answer">Correct Answer: ${result.answer}</p>
+                    <button class="solution-toggle-btn">Show Detailed Solution</button>
+                    <div class="detailed-solution" style="display: none;">
+                        ${result.solution}
+                    </div>
+                `;
+                reviewSection.appendChild(reviewItem);
+            });
+
+            // Add event listeners for the new toggle buttons
+            document.querySelectorAll('.solution-toggle-btn').forEach(button => {
+                button.addEventListener('click', e => {
+                    const solutionDiv = e.target.nextElementSibling;
+                    const isVisible = solutionDiv.style.display === 'block';
+                    solutionDiv.style.display = isVisible ? 'none' : 'block';
+                    e.target.textContent = isVisible ? 'Show Detailed Solution' : 'Hide Detailed Solution';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

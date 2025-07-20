@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIVA-TRIVIA Algebra Quiz: JEE Advanced Level</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Body & Page Container Styling --- */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #4A00E0, #8E2DE2);
+        }
+
+        .main-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 850px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Page Sections --- */
+        .page-section {
+            padding: 30px 40px;
+        }
+
+        /* --- Login Page Styling --- */
+        #login-container { text-align: center; }
+        #login-container h1 {
+            font-family: 'Merriweather', serif;
+            color: #4A00E0;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+        }
+        #login-container p {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        #name-input {
+            width: 80%; padding: 15px; font-size: 1em;
+            border: 2px solid #bdc3c7; border-radius: 8px; margin-bottom: 20px;
+        }
+        #start-quiz-btn {
+            background: #8E2DE2; color: white; font-size: 1.2em;
+            padding: 15px 40px; border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s; font-weight: bold;
+        }
+        #start-quiz-btn:hover { background-color: #7b25c4; }
+
+        /* --- Quiz Container Styling --- */
+        #quiz-container { display: none; }
+        .quiz-header {
+            background: linear-gradient(135deg, #4A00E0, #6A15B4);
+            color: white; padding: 20px 30px;
+        }
+        .quiz-header-content { display: flex; justify-content: space-between; align-items: center; }
+        .quiz-header h1 { margin: 0; font-size: 1.8em; }
+        #score-display {
+            font-size: 1.2em; font-weight: bold; background-color: #fff;
+            color: #4A00E0; padding: 5px 15px; border-radius: 8px;
+        }
+        #progress-text { font-size: 1em; color: #555; margin-bottom: 15px; }
+        #question-text {
+            color: #333; font-size: 1.3em; font-weight: 700;
+            margin-bottom: 25px; line-height: 1.5;
+        }
+        .options-list { list-style-type: none; padding: 0; margin: 0; }
+        .option-btn {
+            display: block; width: 100%; background-color: #f8f9fa;
+            border: 2px solid #e0e0e0; color: #333; padding: 15px;
+            margin-bottom: 12px; text-align: left; font-size: 1em;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) { background-color: #e9ecef; border-color: #8E2DE2; }
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .option-btn.selected { background-color: #eadaff; border-color: #4A00E0; font-weight: bold; }
+        .option-btn.correct { background-color: #d4edda; border-color: #28a745; color: #155724; font-weight: bold; }
+        .option-btn.incorrect { background-color: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: bold; }
+
+        /* --- Solution Styling --- */
+        .solution-container {
+            background-color: #f1f3f5; border: 1px solid #dee2e6;
+            border-radius: 8px; padding: 20px; margin-top: 25px;
+        }
+        .solution-container h3 { margin-top: 0; color: #4A00E0; font-family: 'Merriweather', serif; }
+        .solution-text p, .solution-text li, .detailed-solution p, .detailed-solution li {
+            margin-bottom: 12px; line-height: 1.7; color: #343a40;
+        }
+        .solution-text strong, .detailed-solution strong { color: #8E2DE2; }
+        .solution-text code, .detailed-solution code {
+            background-color: #e9ecef; color: #c7254e; padding: 3px 6px;
+            border-radius: 4px; font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .quiz-footer {
+            padding: 20px 30px; text-align: right; border-top: 1px solid #e9ecef;
+            display: flex; justify-content: flex-end; align-items: center;
+        }
+        .quiz-btn {
+            color: white; border: none; padding: 12px 28px; font-size: 1em;
+            border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+            margin-left: 10px; font-weight: bold;
+        }
+        .quiz-btn:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        #submit-btn { background-color: #28a745; }
+        #submit-btn:hover:not(:disabled) { background-color: #218838; }
+        #show-answer-btn { background-color: #007bff; }
+        #show-answer-btn:hover:not(:disabled) { background-color: #0069d9; }
+        #next-btn { background-color: #17a2b8; display: none; }
+        #next-btn:hover { background-color: #138496; }
+
+        /* --- Results & Certificate Page Styling --- */
+        #results-container { display: none; text-align: center; }
+        #results-container h2 { font-family: 'Merriweather', serif; font-size: 2.5em; color: #4A00E0; margin-bottom: 20px; }
+        #final-score-text { font-size: 1.8em; font-weight: bold; color: #333; margin-bottom: 30px; }
+        #restart-quiz-btn {
+            background-color: #dc3545; color: white; font-size: 1.1em; padding: 15px 40px;
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s; margin: 20px 0;
+        }
+        #restart-quiz-btn:hover { background-color: #c82333; }
+        
+        /* --- Certificate --- */
+        #certificate-container {
+            border: 10px solid #4A00E0;
+            background-color: #fdfdfd;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .cert-header { text-align: center; }
+        .cert-title { font-family: 'Merriweather', serif; font-size: 2.5em; color: #8E2DE2; margin: 0; }
+        .cert-subtitle { font-size: 1.2em; color: #555; margin-top: 5px; }
+        .cert-awarded-to { font-size: 1.1em; color: #333; margin: 25px 0 10px 0; }
+        .cert-user-name { font-family: 'Merriweather', serif; font-size: 2.2em; color: #4A00E0; margin: 0; }
+        .cert-achievement { font-size: 1.2em; color: #333; margin-top: 20px; }
+        .cert-medal { margin-top: 20px; }
+        .cert-medal-text { font-size: 1.8em; font-weight: bold; }
+        .gold { color: #d4af37; }
+        .silver { color: #c0c0c0; }
+        .bronze { color: #cd7f32; }
+        .participation { color: #6c757d; }
+
+        /* --- Review Section Styling --- */
+        #review-section { text-align: left; margin-top: 30px; }
+        #review-section h3 {
+            border-bottom: 2px solid #dee2e6; padding-bottom: 10px; margin-bottom: 20px;
+            color: #4A00E0; font-size: 1.5em;
+        }
+        .review-item { background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #e9ecef; }
+        .review-question { font-weight: bold; font-size: 1.1em; margin-top: 0; color: #343a40; }
+        .review-user-answer { padding: 8px 12px; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        .review-user-answer.correct { background-color: #d4edda; color: #155724; }
+        .review-user-answer.incorrect { background-color: #f8d7da; color: #721c24; }
+        .review-user-answer.skipped { background-color: #fff3cd; color: #856404; }
+        .review-correct-answer { color: #155724; font-style: italic; margin-top: 10px; }
+        .solution-toggle-btn {
+            background-color: #17a2b8; color: white; border: none; padding: 8px 15px;
+            font-size: 0.9em; border-radius: 5px; cursor: pointer;
+            transition: background-color 0.3s ease; margin-top: 15px; font-weight: bold;
+        }
+        .solution-toggle-btn:hover { background-color: #138496; }
+        .detailed-solution { border-top: 1px solid #dee2e6; margin-top: 15px; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- ===== 1. LOGIN PAGE ===== -->
+        <div class="page-section" id="login-container">
+            <h1>VIVA-TRIVIA</h1>
+            <p>Enter your name to conquer the<br><strong>Algebra Quiz (JEE Advanced Level)</strong></p>
+            <input type="text" id="name-input" placeholder="Your Full Name" required>
+            <br>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </div>
+
+        <!-- ===== 2. QUIZ PAGE ===== -->
+        <div id="quiz-container">
+            <div class="quiz-header">
+                 <div class="quiz-header-content">
+                    <h1>JEE Advanced: Algebra</h1>
+                    <div id="score-display">Score: 0</div>
+                </div>
+            </div>
+            <div class="page-section">
+                <p id="progress-text">Question 1 of 10</p>
+                <h2 id="question-text">Loading question...</h2>
+                <ul class="options-list" id="options-list"></ul>
+
+                <div id="solution-container" class="solution-container" style="display: none;">
+                    <h3>Solution:</h3>
+                    <div id="solution-text" class="solution-text"></div>
+                </div>
+
+            </div>
+            <div class="quiz-footer">
+                <button id="show-answer-btn" class="quiz-btn">Show Answer</button>
+                <button id="submit-btn" class="quiz-btn">Submit</button>
+                <button id="next-btn" class="quiz-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- ===== 3. RESULTS PAGE ===== -->
+        <div class="page-section" id="results-container">
+            <h2>Quiz Complete!</h2>
+            <div id="certificate-container" style="display: none;">
+                <!-- Certificate will be generated by JS -->
+            </div>
+            <p id="final-score-text">Your Final Score: 0 / 0</p>
+            <button id="restart-quiz-btn">Try Again</button>
+            <div id="review-section">
+                <!-- Review content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionBank = [
+            {
+                question: "If α and β are the roots of the equation z² - z + 1 = 0, then the value of α²⁰²³ + β²⁰²³ is:",
+                options: ["-1", "1", "0", "i"],
+                answer: "1",
+                solution: "<p>The given quadratic equation is a classic form related to the cube roots of unity.</p>" +
+                          "<p><strong>1. Find the roots:</strong></p>" +
+                          "<p>Using the quadratic formula for <code>z² - z + 1 = 0</code>, we get <code>z = (1 ± √(-3))/2 = (1 ± i√3)/2</code>.</p>" +
+                          "<p>These roots are related to the complex cube roots of unity, ω and ω². Specifically, the roots of <code>z²+z+1=0</code> are ω and ω². The roots here are <code>-ω</code> and <code>-ω²</code>.</p>" +
+                          "<p>Let <code>α = -ω²</code> and <code>β = -ω</code>.</p>" +
+                          "<p><strong>2. Use properties of ω:</strong></p>" +
+                          "<p>We know that <code>ω³ = 1</code> and <code>1 + ω + ω² = 0</code>.</p>" +
+                          "<p><strong>3. Evaluate the expression:</strong></p>" +
+                          "<p>We need to find <code>α²⁰²³ + β²⁰²³ = (-ω²)²⁰²³ + (-ω)²⁰²³</code>.</p>" +
+                          "<p><code>= -(ω⁴⁰⁴⁶) - (ω²⁰²³)</code></p>" +
+                          "<p>Now, we find the powers of ω by dividing the exponent by 3:</p>" +
+                          "<ul><li><code>4046 = 3 × 1348 + 2</code>, so <code>ω⁴⁰⁴⁶ = (ω³)¹³⁴⁸ * ω² = 1 * ω² = ω²</code>.</li>" +
+                          "<li><code>2023 = 3 × 674 + 1</code>, so <code>ω²⁰²³ = (ω³)⁶⁷⁴ * ω¹ = 1 * ω = ω</code>.</li></ul>" +
+                          "<p><strong>4. Substitute back and solve:</strong></p>" +
+                          "<p>The expression becomes <code>- (ω²) - (ω) = -(ω² + ω)</code>.</p>" +
+                          "<p>From the property <code>1 + ω + ω² = 0</code>, we have <code>ω + ω² = -1</code>.</p>" +
+                          "<p>Therefore, the final value is <code>-(-1) = 1</code>.</p>"
+            },
+            {
+                question: "Let M be a 3x3 matrix satisfying M[0, 1, 0]ᵀ = [-1, 2, 0]ᵀ, M[1, -1, 0]ᵀ = [1, 1, -1]ᵀ, and M[1, 1, 1]ᵀ = [0, 0, 12]ᵀ. The value of det(M) is:",
+                options: ["12", "24", "36", "-36"],
+                answer: "36",
+                solution: "<p>This problem can be solved by setting up a matrix equation.</p>" +
+                          "<p><strong>1. Formulate the Matrix Equation:</strong></p>" +
+                          "<p>Let the given column vectors be <code>u₁=[0,1,0]ᵀ</code>, <code>u₂=[1,-1,0]ᵀ</code>, <code>u₃=[1,1,1]ᵀ</code>. And their transformations be <code>v₁=[-1,2,0]ᵀ</code>, <code>v₂=[1,1,-1]ᵀ</code>, <code>v₃=[0,0,12]ᵀ</code>.</p>" +
+                          "<p>The given information can be written as a single matrix equation: <code>M [u₁ u₂ u₃] = [v₁ v₂ v₃]</code>.</p>" +
+                          "<p>Let <code>A = [u₁ u₂ u₃]</code> and <code>B = [v₁ v₂ v₃]</code>. The equation is <code>M * A = B</code>.</p>" +
+                          "<p><code>A = [[0, 1, 1], [1, -1, 1], [0, 0, 1]]</code></p>" +
+                          "<p><code>B = [[-1, 1, 0], [2, 1, 0], [0, -1, 12]]</code></p>" +
+                          "<p><strong>2. Use the Determinant Property:</strong></p>" +
+                          "<p>Taking the determinant of both sides of <code>M * A = B</code>, we get <code>det(M) * det(A) = det(B)</code>.</p>" +
+                          "<p><strong>3. Calculate det(A):</strong></p>" +
+                          "<p><code>det(A) = 0 - 1(1*1 - 1*0) + 1(1*0 - (-1)*0) = -1(1) = -1</code>.</p>" +
+                          "<p><strong>4. Calculate det(B):</strong></p>" +
+                          "<p>Expanding along the third column for simplicity:</p>" +
+                          "<p><code>det(B) = 0 - 0 + 12 * ((-1)*1 - 1*2) = 12 * (-1 - 2) = 12 * (-3) = -36</code>.</p>" +
+                          "<p><strong>5. Find det(M):</strong></p>" +
+                          "<p><code>det(M) * (-1) = -36</code></p>" +
+                          "<p><code>det(M) = 36</code>.</p>"
+            },
+            {
+                question: "The number of 5-digit numbers that can be formed using the digits {0, 1, 2, 3, 4, 5} without repetition, which are divisible by 3, is:",
+                options: ["120", "216", "240", "312"],
+                answer: "216",
+                solution: "<p>A number is divisible by 3 if the sum of its digits is divisible by 3.</p>" +
+                          "<p><strong>1. Analyze the given digits:</strong></p>" +
+                          "<p>The set of digits is S = {0, 1, 2, 3, 4, 5}. The sum of all these digits is 0+1+2+3+4+5 = 15, which is divisible by 3.</p>" +
+                          "<p>To form a 5-digit number, we must exclude one digit. For the sum of the remaining 5 digits to be divisible by 3, the excluded digit must also be divisible by 3 (since the total sum is divisible by 3).</p>" +
+                          "<p><strong>2. Identify possible cases:</strong></p>" +
+                          "<p>The digits in S that are divisible by 3 are {0, 3}. So we have two cases for the excluded digit.</p>" +
+                          "<p><strong>Case 1: Exclude the digit 3.</strong></p>" +
+                          "<ul><li>The digits to be used are {0, 1, 2, 4, 5}.</li>" +
+                          "<li>The sum is 12, which is divisible by 3.</li>" +
+                          "<li>To form a 5-digit number, the first digit cannot be 0.</li>" +
+                          "<li>Number of choices for the first digit: 4 (1, 2, 4, or 5).</li>" +
+                          "<li>Number of ways to arrange the remaining 4 digits: 4!.</li>" +
+                          "<li>Total numbers in this case: <code>4 * 4! = 4 * 24 = 96</code>.</li></ul>" +
+                          "<p><strong>Case 2: Exclude the digit 0.</strong></p>" +
+                          "<ul><li>The digits to be used are {1, 2, 3, 4, 5}.</li>" +
+                          "<li>The sum is 15, which is divisible by 3.</li>" +
+                          "<li>Since 0 is not present, any arrangement of these 5 digits will form a valid 5-digit number.</li>" +
+                          "<li>Total numbers in this case: <code>5! = 120</code>.</li></ul>" +
+                          "<p><strong>3. Calculate the total number:</strong></p>" +
+                          "<p>Total numbers = (Numbers from Case 1) + (Numbers from Case 2) = 96 + 120 = 216.</p>"
+            },
+            {
+                question: "If α and β are the roots of x² - 2x + 3 = 0, find the equation whose roots are (α³ - 3α² + 5α - 2) and (β³ - 3β² + 5β - 2).",
+                options: ["x² - 2x + 1 = 0", "x² - 3x + 2 = 0", "x² - 4x + 3 = 0", "x² - x + 1 = 0"],
+                answer: "x² - 2x + 1 = 0",
+                solution: "<p>This problem can be greatly simplified by using the fact that α and β are roots of the given equation.</p>" +
+                          "<p><strong>1. Use the root property:</strong></p>" +
+                          "<p>Since α is a root of <code>x² - 2x + 3 = 0</code>, it must satisfy the equation. Therefore, <code>α² - 2α + 3 = 0</code>.</p>" +
+                          "<p><strong>2. Simplify the expression for the new roots:</strong></p>" +
+                          "<p>Let the new root be <code>P(α) = α³ - 3α² + 5α - 2</code>.</p>" +
+                          "<p>We can use polynomial division or algebraic manipulation to simplify P(α) using the relation <code>α² = 2α - 3</code>.</p>" +
+                          "<p><code>P(α) = α(α²) - 3α² + 5α - 2</code></p>" +
+                          "<p><code>= α(2α - 3) - 3(2α - 3) + 5α - 2</code></p>" +
+                          "<p><code>= 2α² - 3α - 6α + 9 + 5α - 2</code></p>" +
+                          "<p><code>= 2α² - 4α + 7</code></p>" +
+                          "<p><code>= 2(α² - 2α) + 7</code></p>" +
+                          "<p>From the original equation, <code>α² - 2α = -3</code>. Substituting this in:</p>" +
+                          "<p><code>P(α) = 2(-3) + 7 = -6 + 7 = 1</code>.</p>" +
+                          "<p><strong>3. Find the second root:</strong></p>" +
+                          "<p>Since the expression for the new root is symmetric in terms of its variable, the same logic applies to β. The second root, <code>P(β)</code>, will also be 1.</p>" +
+                          "<p><strong>4. Form the new equation:</strong></p>" +
+                          "<p>The new roots are 1 and 1. The required quadratic equation is:</p>" +
+                          "<p><code>(x - 1)(x - 1) = 0</code></p>" +
+                          "<p><code>x² - 2x + 1 = 0</code>.</p>"
+            },
+            {
+                question: "A box contains 4 black and 6 white balls. A ball is drawn, its color noted, and returned to the box with 2 other balls of the same color. A second ball is then drawn. The probability that the second ball is black is:",
+                options: ["1/3", "2/5", "1/2", "3/5"],
+                answer: "2/5",
+                solution: "<p>This is a problem of total probability, often related to Polya's Urn model.</p>" +
+                          "<p>Let <code>B₁</code> be the event that the first ball is black, and <code>W₁</code> be the event that the first ball is white.</p>" +
+                          "<p>Let <code>B₂</code> be the event that the second ball is black.</p>" +
+                          "<p>We want to find <code>P(B₂)</code>.</p>" +
+                          "<p><strong>1. Use the Law of Total Probability:</strong></p>" +
+                          "<p><code>P(B₂) = P(B₂ | B₁) * P(B₁) + P(B₂ | W₁) * P(W₁)</code></p>" +
+                          "<p><strong>2. Calculate initial probabilities:</strong></p>" +
+                          "<ul><li>Initial state: 4 Black, 6 White (Total 10).</li>" +
+                          "<li><code>P(B₁) = 4/10 = 2/5</code>.</li>" +
+                          "<li><code>P(W₁) = 6/10 = 3/5</code>.</li></ul>" +
+                          "<p><strong>3. Calculate conditional probabilities for the second draw:</strong></p>" +
+                          "<ul><li><strong>If B₁ occurred:</strong> The first ball was black. We return it and add 2 more black balls. The box now contains (4+2)=6 Black and 6 White balls (Total 12). The probability of drawing a black ball now is: <code>P(B₂ | B₁) = 6/12 = 1/2</code>.</li>" +
+                          "<li><strong>If W₁ occurred:</strong> The first ball was white. We return it and add 2 more white balls. The box now contains 4 Black and (6+2)=8 White balls (Total 12). The probability of drawing a black ball now is: <code>P(B₂ | W₁) = 4/12 = 1/3</code>.</li></ul>" +
+                          "<p><strong>4. Combine the results:</strong></p>" +
+                          "<p><code>P(B₂) = (1/2) * (2/5) + (1/3) * (3/5)</code></p>" +
+                          "<p><code>P(B₂) = 1/5 + 1/5 = 2/5</code>.</p>" +
+                          "<p>(Interestingly, the probability remains the same as the initial probability of drawing a black ball.)</p>"
+            },
+            {
+                question: "Let z₁, z₂, z₃ be vertices of a triangle ABC such that |z₁|=|z₂|=|z₃|=1 and z₁+z₂+z₃=0. The area of triangle ABC is:",
+                options: ["3√3 / 4", "√3 / 2", "1", "3/2"],
+                answer: "3√3 / 4",
+                solution: "<p>We can solve this by interpreting the given conditions geometrically.</p>" +
+                          "<p><strong>1. Interpret |z₁|=|z₂|=|z₃|=1:</strong></p>" +
+                          "<p>This condition means that the complex numbers z₁, z₂, and z₃ all have a modulus of 1. Geometrically, this means the points A, B, and C lie on a circle of radius R=1 centered at the origin (0,0). Therefore, the origin is the circumcenter of triangle ABC.</p>" +
+                          "<p><strong>2. Interpret z₁ + z₂ + z₃ = 0:</strong></p>" +
+                          "<p>The position vector of the centroid of a triangle with vertices z₁, z₂, z₃ is given by <code>G = (z₁ + z₂ + z₃) / 3</code>.</p>" +
+                          "<p>The condition <code>z₁ + z₂ + z₃ = 0</code> implies that the centroid <code>G</code> is at the origin (0,0).</p>" +
+                          "<p><strong>3. Combine the Interpretations:</strong></p>" +
+                          "<p>In triangle ABC, both the circumcenter and the centroid are at the origin. A triangle in which the circumcenter and centroid coincide must be an <strong>equilateral triangle</strong>.</p>" +
+                          "<p><strong>4. Calculate the Area:</strong></p>" +
+                          "<p>We have an equilateral triangle inscribed in a circle of radius R=1.</p>" +
+                          "<p>The side length 's' of an equilateral triangle inscribed in a circle of radius R is given by the formula <code>s = R√3</code>.</p>" +
+                          "<p>In our case, <code>s = 1 * √3 = √3</code>.</p>" +
+                          "<p>The area of an equilateral triangle with side 's' is given by <code>Area = (s²√3) / 4</code>.</p>" +
+                          "<p><code>Area = ((√3)² * √3) / 4 = (3√3) / 4</code>.</p>"
+            },
+            {
+                question: "The value of the sum Σ (from r=0 to 10) r ⋅ ¹⁰Cᵣ ⋅ 3ʳ ⋅ (-2)¹⁰⁻ʳ is:",
+                options: ["10", "20", "30", "1"],
+                answer: "30",
+                solution: "<p>This sum can be evaluated using the properties of the binomial expansion and differentiation.</p>" +
+                          "<p><strong>1. Recall the Binomial Expansion:</strong></p>" +
+                          "<p>The general binomial expansion is <code>(y + x)ⁿ = Σ (from r=0 to n) ⁿCᵣ xʳ yⁿ⁻ʳ</code>.</p>" +
+                          "<p><strong>2. Differentiate the Binomial Identity:</strong></p>" +
+                          "<p>Let's consider the identity <code>(y + x)¹⁰ = Σ (from r=0 to 10) ¹⁰Cᵣ xʳ y¹⁰⁻ʳ</code>.</p>" +
+                          "<p>Differentiating both sides with respect to x, treating y as a constant:</p>" +
+                          "<p><code>d/dx [(y+x)¹⁰] = d/dx [Σ ¹⁰Cᵣ xʳ y¹⁰⁻ʳ]</code></p>" +
+                          "<p><code>10(y+x)⁹ = Σ ¹⁰Cᵣ (r xʳ⁻¹) y¹⁰⁻ʳ</code></p>" +
+                          "<p><strong>3. Manipulate the equation:</strong></p>" +
+                          "<p>To get the desired form <code>r ⋅ ¹⁰Cᵣ ⋅ xʳ</code>, we multiply the entire equation by x:</p>" +
+                          "<p><code>10x(y+x)⁹ = Σ ¹⁰Cᵣ ⋅ r ⋅ xʳ ⋅ y¹⁰⁻ʳ</code></p>" +
+                          "<p><strong>4. Substitute the given values:</strong></p>" +
+                          "<p>The given sum matches this form with n=10, x=3, and y=-2.</p>" +
+                          "<p>Substituting these values into the left side of our derived identity:</p>" +
+                          "<p>Sum = <code>10 * (3) * (-2 + 3)⁹</code></p>" +
+                          "<p>Sum = <code>30 * (1)⁹</code></p>" +
+                          "<p>Sum = <code>30</code>.</p>"
+            },
+            {
+                question: "Let roots of x³ - 6x² + px - 10 = 0 be in A.P. The value of p is:",
+                options: ["11", "12", "13", "14"],
+                answer: "13",
+                solution: "<p>We can use the properties of roots of a polynomial (Vieta's formulas).</p>" +
+                          "<p><strong>1. Define the roots:</strong></p>" +
+                          "<p>Since the roots are in an Arithmetic Progression (A.P.), let them be <code>a-d, a, a+d</code>.</p>" +
+                          "<p><strong>2. Use the sum of roots formula:</strong></p>" +
+                          "<p>For a cubic equation <code>Ax³+Bx²+Cx+D=0</code>, the sum of roots is <code>-B/A</code>.</p>" +
+                          "<p>Sum = <code>(a-d) + a + (a+d) = -(-6)/1 = 6</code>.</p>" +
+                          "<p><code>3a = 6</code>, which gives <code>a = 2</code>.</p>" +
+                          "<p>This means that one of the roots of the equation is 2.</p>" +
+                          "<p><strong>3. Use the root property:</strong></p>" +
+                          "<p>Since 2 is a root, it must satisfy the equation. We can substitute x=2 into the equation to find p.</p>" +
+                          "<p><code>(2)³ - 6(2)² + p(2) - 10 = 0</code></p>" +
+                          "<p><code>8 - 6(4) + 2p - 10 = 0</code></p>" +
+                          "<p><code>8 - 24 + 2p - 10 = 0</code></p>" +
+                          "<p><code>-16 + 2p - 10 = 0</code></p>" +
+                          "<p><code>2p - 26 = 0</code></p>" +
+                          "<p><code>2p = 26</code>, which means <code>p = 13</code>.</p>"
+            },
+            {
+                 question: "Let a₁, a₂, a₃, ... be an A.P. with a₁=3 and common difference d=2. The value of the sum Σ (from n=1 to 9) [1 / (aₙ ⋅ aₙ₊₁)] is:",
+                options: ["1/7", "3/21", "1/9", "9/21"],
+                answer: "1/7",
+                solution: "<p>This problem involves a telescoping series.</p>" +
+                          "<p><strong>1. Find the general term aₙ:</strong></p>" +
+                          "<p><code>aₙ = a₁ + (n-1)d = 3 + (n-1)2 = 3 + 2n - 2 = 2n + 1</code>.</p>" +
+                          "<p>So, <code>aₙ₊₁ = 2(n+1) + 1 = 2n + 3</code>.</p>" +
+                          "<p><strong>2. Express the term of the sum using partial fractions:</strong></p>" +
+                          "<p>The term is <code>1 / ((2n+1)(2n+3))</code>.</p>" +
+                          "<p>We can write this as <code>A/(2n+1) + B/(2n+3)</code>. The difference between the factors in the denominator is 2, so we can write:</p>" +
+                          "<p><code>(1/2) * [2 / ((2n+1)(2n+3))] = (1/2) * [( (2n+3) - (2n+1) ) / ((2n+1)(2n+3))]</code></p>" +
+                          "<p><code>= (1/2) * [1/(2n+1) - 1/(2n+3)]</code>.</p>" +
+                          "<p><strong>3. Write out the sum:</strong></p>" +
+                          "<p>The sum S is <code>Σ (from n=1 to 9) (1/2) * [1/(2n+1) - 1/(2n+3)]</code>.</p>" +
+                          "<p><code>S = (1/2) * [ (1/3 - 1/5) + (1/5 - 1/7) + (1/7 - 1/9) + ... + (1/19 - 1/21) ]</code></p>" +
+                          "<p><strong>4. Cancel the terms (Telescoping):</strong></p>" +
+                          "<p>All the intermediate terms cancel out, leaving only the first and the last term.</p>" +
+                          "<p><code>S = (1/2) * [1/3 - 1/21]</code></p>" +
+                          "<p><code>S = (1/2) * [(7 - 1) / 21] = (1/2) * [6 / 21] = 3/21</code>.</p>" +
+                          "<p><strong>5. Simplify the result:</strong></p>" +
+                          "<p><code>S = 1/7</code>.</p>"
+            },
+            {
+                question: "From 10 distinct items, three are selected at random and arranged in a circle. What is the probability that a specific arrangement is obtained?",
+                options: ["1/120", "1/240", "1/720", "2/10"],
+                answer: "1/240",
+                solution: "<p>This is a two-stage probability problem involving combinations and circular permutations.</p>" +
+                          "<p><strong>1. Find the size of the sample space (Total Possible Outcomes):</strong></p>" +
+                          "<p>The process has two steps: selecting the items, and then arranging them.</p>" +
+                          "<ul><li><strong>Step A: Selection.</strong> The number of ways to choose 3 distinct items from 10 is given by the combination formula <code>¹⁰C₃</code>." +
+                          "<br><code>¹⁰C₃ = 10! / (3! * 7!) = (10 * 9 * 8) / (3 * 2 * 1) = 120</code>.</li>" +
+                          "<li><strong>Step B: Arrangement.</strong> For each set of 3 chosen items, they are arranged in a circle. The number of ways to arrange 'n' distinct items in a circle is <code>(n-1)!</code>." +
+                          "<br>For 3 items, this is <code>(3-1)! = 2! = 2</code>.</li></ul>" +
+                          "<p>The total number of possible outcomes (a specific set of items in a specific circular order) is the product of these two results.</p>" +
+                          "<p>Total Outcomes = <code>¹⁰C₃ * (3-1)! = 120 * 2 = 240</code>.</p>" +
+                          "<p><strong>2. Find the Probability:</strong></p>" +
+                          "<p>We want the probability of obtaining one 'specific arrangement'. This is a single favorable outcome out of the total possible outcomes.</p>" +
+                          "<p>Probability = (Favorable Outcomes) / (Total Outcomes) = <code>1 / 240</code>.</p>"
+            }
+        ];
+
+        // --- Standard Quiz JS (Identical to previous versions) ---
+
+        const loginContainer = document.getElementById('login-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nameInput = document.getElementById('name-input');
+        const questionTextEl = document.getElementById('question-text');
+        const progressTextEl = document.getElementById('progress-text');
+        const optionsListEl = document.getElementById('options-list');
+        const solutionContainer = document.getElementById('solution-container');
+        const solutionTextEl = document.getElementById('solution-text');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const finalScoreText = document.getElementById('final-score-text');
+        const reviewSection = document.getElementById('review-section');
+        const certificateContainer = document.getElementById('certificate-container');
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswerBtn = null;
+        let userAnswers = [];
+        let userName = "";
+
+        startQuizBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        showAnswerBtn.addEventListener('click', showSolution);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        restartQuizBtn.addEventListener('click', () => {
+             loginContainer.style.display = 'block';
+             resultsContainer.style.display = 'none';
+             certificateContainer.style.display = 'none';
+             certificateContainer.innerHTML = '';
+             nameInput.value = '';
+        });
+
+        function startQuiz() {
+            userName = nameInput.value.trim();
+            if (userName === "") {
+                alert("Please enter your name to start the quiz.");
+                return;
+            }
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            resultsContainer.style.display = 'none';
+            loginContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            progressTextEl.innerText = `Question ${currentQuestionIndex + 1} of ${questionBank.length}`;
+            questionTextEl.innerHTML = currentQuestion.question;
+            scoreDisplay.innerText = `Score: ${score}`;
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerHTML = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', selectAnswer);
+                optionsListEl.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            solutionContainer.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            showAnswerBtn.style.display = 'inline-block';
+            showAnswerBtn.disabled = false;
+            nextBtn.style.display = 'none';
+            selectedAnswerBtn = null;
+            while (optionsListEl.firstChild) {
+                optionsListEl.removeChild(optionsListEl.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            if (selectedAnswerBtn) {
+                selectedAnswerBtn.classList.remove('selected');
+            }
+            selectedAnswerBtn = e.currentTarget;
+            selectedAnswerBtn.classList.add('selected');
+            submitBtn.disabled = false;
+        }
+
+        function checkAnswer() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            const isCorrect = selectedAnswerBtn.innerHTML === currentQuestion.answer;
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: selectedAnswerBtn.innerHTML,
+                isCorrect: isCorrect
+            });
+            if (isCorrect) {
+                score++;
+                selectedAnswerBtn.classList.add('correct');
+            } else {
+                selectedAnswerBtn.classList.add('incorrect');
+                highlightCorrectAnswer();
+            }
+            scoreDisplay.innerText = `Score: ${score}`;
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function showSolution() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: 'Skipped (Viewed Answer)',
+                isCorrect: false
+            });
+            solutionTextEl.innerHTML = currentQuestion.solution;
+            solutionContainer.style.display = 'block';
+            highlightCorrectAnswer();
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+        
+        function highlightCorrectAnswer() {
+            const correctAnswer = questionBank[currentQuestionIndex].answer;
+             Array.from(optionsListEl.children).forEach(button => {
+                if (button.innerHTML === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+
+        function disableAllOptions() {
+            Array.from(optionsListEl.children).forEach(button => button.disabled = true);
+            showAnswerBtn.disabled = true;
+            submitBtn.disabled = true;
+        }
+
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questionBank.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            finalScoreText.innerText = `Your Final Score: ${score} / ${questionBank.length}`;
+            generateCertificate(userName, score, questionBank.length);
+            generateReview();
+        }
+
+        function generateCertificate(name, userScore, totalQuestions) {
+            const percentage = (userScore / totalQuestions) * 100;
+            let medal, medalClass, achievement;
+            if (percentage >= 80) {
+                medal = "Gold Medal";
+                medalClass = "gold";
+                achievement = "For Outstanding Performance in Algebra";
+            } else if (percentage >= 60) {
+                medal = "Silver Medal";
+                medalClass = "silver";
+                achievement = "For Excellent Performance in Algebra";
+            } else if (percentage >= 40) {
+                medal = "Bronze Medal";
+                medalClass = "bronze";
+                achievement = "For Commendable Performance in Algebra";
+            } else {
+                medal = "Certificate of Participation";
+                medalClass = "participation";
+                achievement = "For Your Valuable Participation";
+            }
+            certificateContainer.innerHTML = `
+                <div class="cert-header">
+                    <div class="cert-title">Certificate of Achievement</div>
+                    <div class="cert-subtitle">VIVA-TRIVIA Algebra Masters</div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p class="cert-awarded-to">This certificate is proudly presented to</p>
+                    <h2 class="cert-user-name">${name}</h2>
+                    <p class="cert-achievement">${achievement}</p>
+                    <div class="cert-medal">
+                        <div class="cert-medal-text ${medalClass}">${medal}</div>
+                    </div>
+                </div>
+            `;
+            certificateContainer.style.display = 'block';
+        }
+
+        function generateReview() {
+            reviewSection.innerHTML = '<h3>Review Your Answers</h3>';
+            userAnswers.forEach((result, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+                let userAnswerHTML = '';
+                if (result.userChoice === 'Skipped (Viewed Answer)') {
+                    userAnswerHTML = `<p class="review-user-answer skipped">Your Action: ${result.userChoice}</p>`;
+                } else {
+                    const status = result.isCorrect ? 'Correct' : 'Incorrect';
+                    const cssClass = result.isCorrect ? 'correct' : 'incorrect';
+                    userAnswerHTML = `<p class="review-user-answer ${cssClass}">Your Answer: ${result.userChoice} (${status})</p>`;
+                }
+                reviewItem.innerHTML = `
+                    <p class="review-question">${index + 1}. ${result.question}</p>
+                    ${userAnswerHTML}
+                    <p class="review-correct-answer">Correct Answer: ${result.answer}</p>
+                    <button class="solution-toggle-btn">Show Detailed Solution</button>
+                    <div class="detailed-solution" style="display: none;">
+                        ${result.solution}
+                    </div>
+                `;
+                reviewSection.appendChild(reviewItem);
+            });
+            document.querySelectorAll('.solution-toggle-btn').forEach(button => {
+                button.addEventListener('click', e => {
+                    const solutionDiv = e.target.nextElementSibling;
+                    const isVisible = solutionDiv.style.display === 'block';
+                    solutionDiv.style.display = isVisible ? 'none' : 'block';
+                    e.target.textContent = isVisible ? 'Hide Detailed Solution' : 'Show Detailed Solution';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

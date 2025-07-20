@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIVA-TRIVIA Physics Quiz: Work & Energy (JEE Level)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Body & Page Container Styling --- */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color:  #2C2945;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align top */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .main-container {
+           background-color:#5A5D8A;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Page Sections --- */
+        .page-section {
+            padding: 30px 40px;
+        }
+
+        /* --- Login Page Styling --- */
+        #login-container {
+            text-align: center;
+        }
+        #login-container h1 {
+            font-family: 'Merriweather', serif;
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        #login-container p {
+            color: #f0f2f5;
+            margin-bottom: 30px;
+        }
+        #name-input {
+            width: 80%;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        #start-quiz-btn {
+            background-color: #3498db;
+            color: white;
+            font-size: 1.1em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-quiz-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* --- Quiz Container Styling --- */
+        #quiz-container { display: none; }
+        .quiz-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px 30px;
+        }
+        .quiz-header-content {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+        }
+
+        .quiz-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        #score-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #2c3e50;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+        #progress-text {
+            font-size: 0.9em;
+            color: #f0f2f5;
+            margin-bottom: 10px;
+        }
+        #question-text {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .options-list {
+            list-style-type: none; padding: 0; margin: 0;
+        }
+        .option-btn {
+            display: block; width: 100%;background-color:#a9abc4;
+            border: 2px solid #e0e0e0; color: #333; padding: 15px;
+            margin-bottom: 10px; text-align: left; font-size: 1em;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #e9ecef; border-color: #3498db;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        .option-btn.selected {
+            background-color: #a3bde3;
+            border-color: #3498db;
+            font-weight: bold;
+        }
+        .option-btn.correct {
+            background-color: #d4edda; border-color: #28a745;
+            color: #155724; font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da; border-color: #dc3545;
+            color: #721c24; font-weight: bold;
+        }
+
+
+        /* --- Solution Styling --- */
+        .solution-container { /* Renamed for review page */
+            background-color: #3e4061;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+        .solution-container h3 {
+            margin-top: 0;
+            color: #2ecc71;
+            font-family: 'Merriweather', serif;
+        }
+        .solution-text p, .solution-text li, .detailed-solution p, .detailed-solution li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #ecf0f1;
+        }
+        .solution-text strong, .detailed-solution strong {
+            color: #f1c40f;
+        }
+        .solution-text code, .detailed-solution code {
+            background-color: #2c3e50;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
+        .quiz-footer {
+            padding: 20px 30px;
+            text-align: right;
+            border-top: 1px solid #7a7da9;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .quiz-btn {
+            color: white; border: none;
+            padding: 10px 25px; font-size: 1em; border-radius: 8px;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .quiz-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #submit-btn { background-color: #3498db; }
+        #submit-btn:hover:not(:disabled) { background-color: #2980b9; }
+
+        #show-answer-btn { background-color: #f39c12; }
+        #show-answer-btn:hover:not(:disabled) { background-color: #e67e22; }
+
+        #next-btn { background-color: #2ecc71; display: none; }
+        #next-btn:hover { background-color: #27ae60; }
+
+
+        /* --- Results Page Styling --- */
+        #results-container {
+            display: none;
+            text-align: center;
+            padding: 30px 40px;
+            color: #ffffff;
+        }
+        #results-container h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        #final-score-text {
+             font-size: 1.8em;
+             font-weight: bold;
+             color: #3498db;
+             margin-bottom: 30px;
+        }
+        #restart-quiz-btn {
+            background-color: #e74c3c;
+            color: white; font-size: 1.1em; padding: 15px 40px;
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 30px;
+        }
+        #restart-quiz-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* --- Review Section Styling --- */
+        #review-section {
+            text-align: left;
+            margin-top: 20px;
+        }
+        #review-section h3 {
+            border-bottom: 2px solid #7a7da9;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .review-item {
+            background-color: #4b4e78;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .review-question {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 0;
+            color: #ffffff;
+        }
+        .review-user-answer {
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .review-user-answer.correct { background-color: #d4edda; color: #155724; }
+        .review-user-answer.incorrect { background-color: #f8d7da; color: #721c24; }
+        .review-user-answer.skipped { background-color: #fff3cd; color: #856404; }
+
+        .review-correct-answer {
+            color: #d4edda;
+            font-style: italic;
+        }
+        .solution-toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .solution-toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .detailed-solution {
+             border-top: 1px solid #7a7da9;
+             margin-top: 15px;
+             padding-top: 15px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- ===== 1. LOGIN PAGE ===== -->
+        <div class="page-section" id="login-container">
+            <h1>VIVA-TRIVIA</h1>
+            <p>Enter your name to begin the<br><strong>Work & Energy Quiz (JEE Level)</strong></p>
+            <input type="text" id="name-input" placeholder="Your Full Name" required>
+            <br>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </div>
+
+        <!-- ===== 2. QUIZ PAGE ===== -->
+        <div id="quiz-container">
+            <div class="quiz-header">
+                 <div class="quiz-header-content">
+                    <h1>Work, Power & Energy</h1>
+                    <div id="score-display">Score: 0</div>
+                </div>
+            </div>
+            <div class="page-section">
+                <p id="progress-text">Question 1 of 10</p>
+                <h2 id="question-text">Loading question...</h2>
+                <ul class="options-list" id="options-list"></ul>
+
+                <div id="solution-container" class="solution-container" style="display: none;">
+                    <h3>Solution:</h3>
+                    <div id="solution-text" class="solution-text"></div>
+                </div>
+
+            </div>
+            <div class="quiz-footer">
+                <button id="show-answer-btn" class="quiz-btn">Show Answer</button>
+                <button id="submit-btn" class="quiz-btn">Submit</button>
+                <button id="next-btn" class="quiz-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- ===== 3. RESULTS PAGE ===== -->
+        <div class="page-section" id="results-container">
+            <h2>Quiz Complete!</h2>
+            <p id="final-score-text">Your Final Score: 0 / 0</p>
+            <button id="restart-quiz-btn">Try Again</button>
+            <div id="review-section">
+                <!-- Review content will be generated by JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const questionBank = [
+             {
+                question: "A particle of mass 0.5 kg moves in a straight line with velocity v = ax^(3/2), where a = 5 m⁻¹/²s⁻¹. The work done by the net force during its displacement from x = 0 to x = 2 m is:",
+                options: ["50 J", "100 J", "150 J", "200 J"],
+                answer: "50 J",
+                solution: "<p>This is solved using the <strong>Work-Energy Theorem</strong>: Work Done (W) = Change in Kinetic Energy (ΔKE).</p>" +
+                          "<p><strong>1. Find Velocities:</strong></p>" +
+                          "<ul><li>Initial velocity (at x=0): <code>v_i = 5 * (0)^(3/2) = 0</code></li>" +
+                          "<li>Final velocity (at x=2): <code>v_f = 5 * (2)^(3/2) = 5 * 2√2 = 10√2</code> m/s</li></ul>" +
+                          "<p><strong>2. Calculate Final Kinetic Energy:</strong></p>" +
+                          "<p><code>KE_f = (1/2)mv_f² = (1/2) * (0.5) * (10√2)²</code></p>" +
+                          "<p><code>KE_f = 0.25 * (100 * 2) = 0.25 * 200 = 50</code> J.</p>" +
+                          "<p><strong>3. Calculate Work Done:</strong></p>" +
+                          "<p><code>W = ΔKE = KE_f - KE_i = 50 J - 0 J = 50 J</code></p>"
+            },
+            {
+                question: "A block of mass 'm' is dropped from a height 'h' onto a spring of spring constant 'k'. The maximum compression 'x' in the spring is found using:",
+                options: ["mgh = (1/2)kx²", "mg(h+x) = (1/2)kx²", "mgh = (1/2)k(h+x)²", "mgx = (1/2)k(h)²"],
+                answer: "mg(h+x) = (1/2)kx²",
+                solution: "<p>Use <strong>Conservation of Mechanical Energy</strong>. The loss in gravitational potential energy equals the gain in elastic potential energy.</p>" +
+                          "<p><strong>1. Define States:</strong> Initial is the block at height h. Final is the block at rest at maximum compression x.</p>" +
+                          "<p><strong>2. Set Zero Level:</strong> Let's set the zero for gravitational potential energy (GPE) at the point of maximum compression.</p>" +
+                          "<p><strong>3. Calculate Total Energy Change:</strong></p>" +
+                          "<ul><li>The block falls a total distance of <code>(h+x)</code>. So, loss in GPE = <code>mg(h+x)</code>.</li>" +
+                          "<li>The spring gains elastic potential energy = <code>(1/2)kx²</code>.</li></ul>" +
+                          "<p><strong>4. Equate Energies:</strong> Loss in GPE = Gain in Spring PE. Thus, <code>mg(h+x) = (1/2)kx²</code>.</p>"
+            },
+            {
+                question: "The potential energy of a particle is U = A/r² - B/r, where A, B are positive constants. For stable equilibrium, the distance 'r' is:",
+                options: ["B/A", "A/B", "2A/B", "B/2A"],
+                answer: "2A/B",
+                solution: "<p><strong>1. Find Force (F):</strong> For equilibrium, force is zero. <code>F = -dU/dr</code>.</p>" +
+                          "<p><code>F = - d/dr (Ar⁻² - Br⁻¹) = -(-2Ar⁻³ + Br⁻²) = 2A/r³ - B/r²</code>.</p>" +
+                          "<p><strong>2. Set F=0:</strong> <code>2A/r³ - B/r² = 0</code> => <code>2A/r³ = B/r²</code>. This gives <code>r = 2A/B</code>.</p>" +
+                          "<p><strong>3. Check Stability:</strong> For stable equilibrium, <code>d²U/dr² > 0</code>.</p>" +
+                          "<p><code>d²U/dr² = d/dr (-2A/r³ + B/r²) = 6A/r⁴ - 2B/r³</code>.</p>" +
+                          "<p>At <code>r = 2A/B</code>, this becomes <code>6A/(2A/B)⁴ - 2B/(2A/B)³ = B⁴/(8A³)</code>. Since A,B > 0, this is positive, so the equilibrium is stable.</p>"
+            },
+            {
+                question: "A force F = (2 + x) N acts on a particle in the x-direction. The work done by this force during a displacement from x = 1 m to x = 2 m is:",
+                options: ["2.5 J", "3.5 J", "4.5 J", "5.0 J"],
+                answer: "3.5 J",
+                solution: "<p>For a variable force, work done is calculated by integration: <strong>W = ∫F dx</strong>.</p>" +
+                          "<p><strong>1. Set up the integral:</strong></p>" +
+                          "<p><code>W = ∫[from 1 to 2] (2 + x) dx</code></p>" +
+                          "<p><strong>2. Perform the integration:</strong></p>" +
+                          "<p><code>W = [2x + x²/2]</code> evaluated from x=1 to x=2.</p>" +
+                          "<p><strong>3. Evaluate at the limits:</strong></p>" +
+                          "<p><code>W = (2(2) + 2²/2) - (2(1) + 1²/2)</code></p>" +
+                          "<p><code>W = (4 + 2) - (2 + 0.5) = 6 - 2.5 = 3.5 J</code>.</p>"
+            },
+            {
+                question: "A block of mass M moving at velocity V collides with a stationary block of mass 2M. They stick together. The loss of kinetic energy is:",
+                options: ["1/2 MV²", "1/3 MV²", "1/4 MV²", "1/6 MV²"],
+                answer: "1/3 MV²",
+                solution: "<p>This is a perfectly inelastic collision. <strong>Momentum is conserved</strong>, but kinetic energy is not.</p>" +
+                          "<p><strong>1. Conserve Momentum:</strong> Let V_f be the final velocity.</p>" +
+                          "<p><code>MV + (2M)(0) = (M + 2M)V_f  =>  MV = 3MV_f  =>  V_f = V/3</code>.</p>" +
+                          "<p><strong>2. Calculate Initial KE:</strong></p>" +
+                          "<p><code>KE_i = (1/2)MV²</code>.</p>" +
+                          "<p><strong>3. Calculate Final KE:</strong></p>" +
+                          "<p><code>KE_f = (1/2)(3M)V_f² = (1/2)(3M)(V/3)² = (1/2)(3M)(V²/9) = (1/6)MV²</code>.</p>" +
+                          "<p><strong>4. Find the Loss:</strong></p>" +
+                          "<p><code>Loss = KE_i - KE_f = (1/2)MV² - (1/6)MV² = (3/6 - 1/6)MV² = (2/6)MV² = (1/3)MV²</code>.</p>"
+            },
+            {
+                question: "An object is subjected to a force F = (2i + 3j) N. At the instant its velocity is v = (4i + 6j) m/s, the instantaneous power delivered by the force is:",
+                options: ["20 W", "26 W", "30 W", "40 W"],
+                answer: "26 W",
+                solution: "<p>Instantaneous power is the dot product of the force vector and the velocity vector: <strong>P = F ⋅ v</strong>.</p>" +
+                          "<p><strong>1. Set up the dot product:</strong></p>" +
+                          "<p><code>P = (2i + 3j) ⋅ (4i + 6j)</code></p>" +
+                          "<p><strong>2. Calculate:</strong></p>" +
+                          "<p><code>P = (2 * 4) + (3 * 6)</code> (since i⋅i=1, j⋅j=1, i⋅j=0)</p>" +
+                          "<p><code>P = 8 + 18 = 26 W</code>.</p>"
+            },
+            {
+                question: "A block of mass 2 kg is pulled 5 m up a rough inclined plane (angle 30°, μ=0.2) by a constant force of 20 N parallel to the incline. The change in its kinetic energy is: (use g=10 m/s²)",
+                options: ["20 J", "32.7 J", "40 J", "50 J"],
+                answer: "32.7 J",
+                solution: "<p>The change in kinetic energy is the net work done on the block (Work-Energy Theorem: <strong>ΔKE = W_net</strong>).</p>" +
+                          "<p><strong>1. Work by Applied Force (W_F):</strong></p>" +
+                          "<p><code>W_F = F * d = 20 N * 5 m = 100 J</code>.</p>" +
+                          "<p><strong>2. Work by Gravity (W_g):</strong></p>" +
+                          "<p><code>W_g = -mgh = -mg(d sinθ) = -2*10*(5*sin30°) = -20*(5*0.5) = -50 J</code>.</p>" +
+                          "<p><strong>3. Work by Friction (W_f):</strong> First find the normal force N.</p>" +
+                          "<p><code>N = mg cosθ = 2*10*cos30° = 20*(√3/2) = 10√3</code> N.</p>" +
+                          "<p><code>W_f = -μNd = -0.2 * (10√3) * 5 = -10√3 ≈ -17.3 J</code>.</p>" +
+                          "<p><strong>4. Net Work:</strong></p>" +
+                          "<p><code>W_net = W_F + W_g + W_f = 100 - 50 - 17.3 = 32.7 J</code>.</p>" +
+                          "<p>Therefore, <code>ΔKE = 32.7 J</code>.</p>"
+            },
+            {
+                question: "A small block is attached to a massless string of length L. What is the minimum velocity 'v' that must be given to the block at the bottom to just complete the vertical loop?",
+                options: ["√(2gL)", "√(3gL)", "√(4gL)", "√(5gL)"],
+                answer: "√(5gL)",
+                solution: "<p><strong>1. Condition at the Top:</strong> To 'just complete the loop', the tension (T) in the string can be zero at the highest point. At this point, gravity provides the necessary centripetal force.</p>" +
+                          "<p><code>mv_top²/L = mg  =>  v_top² = gL</code>.</p>" +
+                          "<p><strong>2. Energy Conservation (Bottom to Top):</strong></p>" +
+                          "<p><code>Energy_bottom = Energy_top</code></p>" +
+                          "<p><code>(1/2)mv_bottom² = (1/2)mv_top² + mg(2L)</code> (height difference is 2L)</p>" +
+                          "<p><strong>3. Substitute and Solve:</strong></p>" +
+                          "<p><code>(1/2)mv_bottom² = (1/2)m(gL) + 2mgL = (5/2)mgL</code>.</p>" +
+                          "<p><code>v_bottom² = 5gL  =>  v_bottom = √(5gL)</code>.</p>"
+            },
+            {
+                question: "The potential energy of a particle is given by U(x,y) = 3x²y - 5y. The force vector F acting on the particle at the point (1, 2) is:",
+                options: ["-6i - 8j N", "6i + 8j N", "-12i - 2j N", "-12i + 2j N"],
+                answer: "-12i + 2j N",
+                solution: "<p>The force vector is the negative gradient of the potential energy: <strong>F = -(∂U/∂x i + ∂U/∂y j)</strong>.</p>" +
+                          "<p><strong>1. Find x-component of Force (F_x):</strong></p>" +
+                          "<p><code>F_x = -∂U/∂x = -∂/∂x(3x²y - 5y) = -6xy</code>.</p>" +
+                          "<p>At (1, 2): <code>F_x = -6(1)(2) = -12 N</code>.</p>" +
+                          "<p><strong>2. Find y-component of Force (F_y):</strong></p>" +
+                          "<p><code>F_y = -∂U/∂y = -∂/∂y(3x²y - 5y) = -(3x² - 5)</code>.</p>" +
+                          "<p>At (1, 2): <code>F_y = -(3(1)² - 5) = -(3 - 5) = 2 N</code>.</p>" +
+                          "<p><strong>3. Write the Force Vector:</strong></p>" +
+                          "<p><code>F = F_x i + F_y j = -12i + 2j N</code>.</p>"
+            },
+            {
+                question: "A spring with k = 100 N/m is stretched by 5 cm from its natural length. The additional work required to stretch it from 5 cm to 10 cm is:",
+                options: ["0.125 J", "0.250 J", "0.375 J", "0.500 J"],
+                answer: "0.375 J",
+                solution: "<p>The work done is the change in the spring's potential energy: <strong>W = ΔPE = PE_f - PE_i</strong>.</p>" +
+                          "<p><strong>1. Define States (in meters):</strong></p>" +
+                          "<ul><li>Initial stretch: <code>x_i = 5 cm = 0.05 m</code>.</li>" +
+                          "<li>Final stretch: <code>x_f = 10 cm = 0.10 m</code>.</li></ul>" +
+                          "<p><strong>2. Use the Potential Energy Formula <code>PE = (1/2)kx²</code>:</strong></p>" +
+                          "<p><code>W = (1/2)kx_f² - (1/2)kx_i² = (1/2)k(x_f² - x_i²)</code></p>" +
+                          "<p><strong>3. Substitute and Calculate:</strong></p>" +
+                          "<p><code>W = (1/2)(100)(0.10² - 0.05²) = 50(0.01 - 0.0025)</code></p>" +
+                          "<p><code>W = 50(0.0075) = 0.375 J</code>.</p>"
+            }
+        ];
+
+
+        // DOM Elements
+        const loginContainer = document.getElementById('login-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nameInput = document.getElementById('name-input');
+        const questionTextEl = document.getElementById('question-text');
+        const progressTextEl = document.getElementById('progress-text');
+        const optionsListEl = document.getElementById('options-list');
+        const solutionContainer = document.getElementById('solution-container');
+        const solutionTextEl = document.getElementById('solution-text');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const finalScoreText = document.getElementById('final-score-text');
+        const reviewSection = document.getElementById('review-section');
+
+        // State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswerBtn = null;
+        let userAnswers = [];
+
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        showAnswerBtn.addEventListener('click', showSolution);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        restartQuizBtn.addEventListener('click', startQuiz);
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            resultsContainer.style.display = 'none';
+            loginContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            progressTextEl.innerText = `Question ${currentQuestionIndex + 1} of ${questionBank.length}`;
+            questionTextEl.innerText = currentQuestion.question;
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', selectAnswer);
+                optionsListEl.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            solutionContainer.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            showAnswerBtn.style.display = 'inline-block';
+            showAnswerBtn.disabled = false;
+            nextBtn.style.display = 'none';
+            selectedAnswerBtn = null;
+
+            while (optionsListEl.firstChild) {
+                optionsListEl.removeChild(optionsListEl.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            if (selectedAnswerBtn) {
+                selectedAnswerBtn.classList.remove('selected');
+            }
+            selectedAnswerBtn = e.target;
+            selectedAnswerBtn.classList.add('selected');
+            submitBtn.disabled = false;
+        }
+
+        function checkAnswer() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            const isCorrect = selectedAnswerBtn.innerText === currentQuestion.answer;
+            
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: selectedAnswerBtn.innerText,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                score++;
+                selectedAnswerBtn.classList.add('correct');
+            } else {
+                selectedAnswerBtn.classList.add('incorrect');
+                highlightCorrectAnswer();
+            }
+            scoreDisplay.innerText = `Score: ${score}`;
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function showSolution() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: 'Skipped (Viewed Answer)',
+                isCorrect: false
+            });
+
+            solutionTextEl.innerHTML = currentQuestion.solution;
+            solutionContainer.style.display = 'block';
+            highlightCorrectAnswer();
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+        
+        function highlightCorrectAnswer() {
+            const correctAnswer = questionBank[currentQuestionIndex].answer;
+             Array.from(optionsListEl.children).forEach(button => {
+                if (button.innerText === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+
+        function disableAllOptions() {
+            Array.from(optionsListEl.children).forEach(button => button.disabled = true);
+            showAnswerBtn.disabled = true;
+            submitBtn.disabled = true;
+        }
+
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questionBank.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            finalScoreText.innerText = `Your Final Score: ${score} / ${questionBank.length}`;
+            generateReview();
+        }
+
+        function generateReview() {
+            reviewSection.innerHTML = '<h3>Review Your Answers</h3>'; // Clear previous review
+            userAnswers.forEach((result, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+
+                let userAnswerHTML = '';
+                if (result.userChoice === 'Skipped (Viewed Answer)') {
+                    userAnswerHTML = `<p class="review-user-answer skipped">Your Action: ${result.userChoice}</p>`;
+                } else {
+                    const status = result.isCorrect ? 'Correct' : 'Incorrect';
+                    const cssClass = result.isCorrect ? 'correct' : 'incorrect';
+                    userAnswerHTML = `<p class="review-user-answer ${cssClass}">Your Answer: ${result.userChoice} (${status})</p>`;
+                }
+
+                reviewItem.innerHTML = `
+                    <p class="review-question">${index + 1}. ${result.question}</p>
+                    ${userAnswerHTML}
+                    <p class="review-correct-answer">Correct Answer: ${result.answer}</p>
+                    <button class="solution-toggle-btn">Show Detailed Solution</button>
+                    <div class="detailed-solution" style="display: none;">
+                        ${result.solution}
+                    </div>
+                `;
+                reviewSection.appendChild(reviewItem);
+            });
+
+            // Add event listeners for the new toggle buttons
+            document.querySelectorAll('.solution-toggle-btn').forEach(button => {
+                button.addEventListener('click', e => {
+                    const solutionDiv = e.target.nextElementSibling;
+                    const isVisible = solutionDiv.style.display === 'block';
+                    solutionDiv.style.display = isVisible ? 'none' : 'block';
+                    e.target.textContent = isVisible ? 'Show Detailed Solution' : 'Hide Detailed Solution';
+                });
+            });
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIVA-TRIVIA Physics Quiz: Electromagnetism (JEE Level)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Body & Page Container Styling --- */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color:  #2C2945;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align top */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .main-container {
+           background-color:#5A5D8A;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Page Sections --- */
+        .page-section {
+            padding: 30px 40px;
+        }
+
+        /* --- Login Page Styling --- */
+        #login-container {
+            text-align: center;
+        }
+        #login-container h1 {
+            font-family: 'Merriweather', serif;
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        #login-container p {
+            color: #f0f2f5;
+            margin-bottom: 30px;
+        }
+        #name-input {
+            width: 80%;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        #start-quiz-btn {
+            background-color: #3498db;
+            color: white;
+            font-size: 1.1em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-quiz-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* --- Quiz Container Styling --- */
+        #quiz-container { display: none; }
+        .quiz-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px 30px;
+        }
+        .quiz-header-content {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+        }
+
+        .quiz-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        #score-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #2c3e50;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+        #progress-text {
+            font-size: 0.9em;
+            color: #f0f2f5;
+            margin-bottom: 10px;
+        }
+        #question-text {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .options-list {
+            list-style-type: none; padding: 0; margin: 0;
+        }
+        .option-btn {
+            display: block; width: 100%;background-color:#a9abc4;
+            border: 2px solid #e0e0e0; color: #333; padding: 15px;
+            margin-bottom: 10px; text-align: left; font-size: 1em;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #e9ecef; border-color: #3498db;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        .option-btn.selected {
+            background-color: #a3bde3;
+            border-color: #3498db;
+            font-weight: bold;
+        }
+        .option-btn.correct {
+            background-color: #d4edda; border-color: #28a745;
+            color: #155724; font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da; border-color: #dc3545;
+            color: #721c24; font-weight: bold;
+        }
+
+
+        /* --- Solution Styling --- */
+        .solution-container { /* Renamed for review page */
+            background-color: #3e4061;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+        .solution-container h3 {
+            margin-top: 0;
+            color: #2ecc71;
+            font-family: 'Merriweather', serif;
+        }
+        .solution-text p, .solution-text li, .detailed-solution p, .detailed-solution li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #ecf0f1;
+        }
+        .solution-text strong, .detailed-solution strong {
+            color: #f1c40f;
+        }
+        .solution-text code, .detailed-solution code {
+            background-color: #2c3e50;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
+        .quiz-footer {
+            padding: 20px 30px;
+            text-align: right;
+            border-top: 1px solid #7a7da9;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .quiz-btn {
+            color: white; border: none;
+            padding: 10px 25px; font-size: 1em; border-radius: 8px;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .quiz-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #submit-btn { background-color: #3498db; }
+        #submit-btn:hover:not(:disabled) { background-color: #2980b9; }
+
+        #show-answer-btn { background-color: #f39c12; }
+        #show-answer-btn:hover:not(:disabled) { background-color: #e67e22; }
+
+        #next-btn { background-color: #2ecc71; display: none; }
+        #next-btn:hover { background-color: #27ae60; }
+
+
+        /* --- Results Page Styling --- */
+        #results-container {
+            display: none;
+            text-align: center;
+            padding: 30px 40px;
+            color: #ffffff;
+        }
+        #results-container h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        #final-score-text {
+             font-size: 1.8em;
+             font-weight: bold;
+             color: #3498db;
+             margin-bottom: 30px;
+        }
+        #restart-quiz-btn {
+            background-color: #e74c3c;
+            color: white; font-size: 1.1em; padding: 15px 40px;
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 30px;
+        }
+        #restart-quiz-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* --- Review Section Styling --- */
+        #review-section {
+            text-align: left;
+            margin-top: 20px;
+        }
+        #review-section h3 {
+            border-bottom: 2px solid #7a7da9;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .review-item {
+            background-color: #4b4e78;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .review-question {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 0;
+            color: #ffffff;
+        }
+        .review-user-answer {
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .review-user-answer.correct { background-color: #d4edda; color: #155724; }
+        .review-user-answer.incorrect { background-color: #f8d7da; color: #721c24; }
+        .review-user-answer.skipped { background-color: #fff3cd; color: #856404; }
+
+        .review-correct-answer {
+            color: #d4edda;
+            font-style: italic;
+        }
+        .solution-toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .solution-toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .detailed-solution {
+             border-top: 1px solid #7a7da9;
+             margin-top: 15px;
+             padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- ===== 1. LOGIN PAGE ===== -->
+        <div class="page-section" id="login-container">
+            <h1>VIVA-TRIVIA</h1>
+            <p>Enter your name to begin the<br><strong>Electromagnetism Quiz (JEE Level)</strong></p>
+            <input type="text" id="name-input" placeholder="Your Full Name" required>
+            <br>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </div>
+
+        <!-- ===== 2. QUIZ PAGE ===== -->
+        <div id="quiz-container">
+            <div class="quiz-header">
+                 <div class="quiz-header-content">
+                    <h1>Electromagnetism</h1>
+                    <div id="score-display">Score: 0</div>
+                </div>
+            </div>
+            <div class="page-section">
+                <p id="progress-text">Question 1 of 10</p>
+                <h2 id="question-text">Loading question...</h2>
+                <ul class="options-list" id="options-list"></ul>
+
+                <div id="solution-container" class="solution-container" style="display: none;">
+                    <h3>Solution:</h3>
+                    <div id="solution-text" class="solution-text"></div>
+                </div>
+
+            </div>
+            <div class="quiz-footer">
+                <button id="show-answer-btn" class="quiz-btn">Show Answer</button>
+                <button id="submit-btn" class="quiz-btn">Submit</button>
+                <button id="next-btn" class="quiz-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- ===== 3. RESULTS PAGE ===== -->
+        <div class="page-section" id="results-container">
+            <h2>Quiz Complete!</h2>
+            <p id="final-score-text">Your Final Score: 0 / 0</p>
+            <button id="restart-quiz-btn">Try Again</button>
+            <div id="review-section">
+                <!-- Review content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionBank = [
+            {
+                question: "A point charge Q is placed at the center of a cube of side L. The electric flux emerging from one face of the cube is:",
+                options: ["Q / ε₀", "Q / (6ε₀)", "Q / (8ε₀L²)", "Zero"],
+                answer: "Q / (6ε₀)",
+                solution: "<p>This problem is solved using <strong>Gauss's Law and symmetry</strong>.</p>" +
+                          "<p><strong>1. Gauss's Law:</strong> The total electric flux (Φ_total) through a closed surface is equal to the net charge enclosed (Q_enc) divided by the permittivity of free space (ε₀).  <code>Φ_total = Q_enc / ε₀</code>.</p>" +
+                          "<p><strong>2. Applying to the Cube:</strong> The cube is a closed surface, and the charge Q is enclosed within it. So, the total flux emerging from all six faces of the cube is <code>Φ_total = Q / ε₀</code>.</p>" +
+                          "<p><strong>3. Using Symmetry:</strong> Since the charge is placed at the exact center of the cube, the electric field lines pass through each of the six faces identically. Therefore, the total flux is shared equally among the six faces.</p>" +
+                          "<p><strong>4. Flux through one face:</strong> The flux through a single face (Φ_face) is the total flux divided by 6.</p>" +
+                          "<p><code>Φ_face = Φ_total / 6 = (Q / ε₀) / 6 = Q / (6ε₀)</code>.</p>"
+            },
+            {
+                question: "A parallel plate capacitor of capacitance C is charged by a battery to a potential V. The battery is then disconnected. A dielectric slab of constant K is now inserted, completely filling the space between the plates. The final energy stored in the capacitor is:",
+                options: ["(1/2)CV²", "K * (1/2)CV²", "(1/K) * (1/2)CV²", "(1/K²) * (1/2)CV²"],
+                answer: "(1/K) * (1/2)CV²",
+                solution: "<p>Let's analyze the state of the capacitor at each step.</p>" +
+                          "<p><strong>1. Initial State:</strong> The capacitor is charged to potential V. The charge on it is <code>Q = CV</code> and the initial energy stored is <code>U_i = (1/2)CV² = Q²/(2C)</code>.</p>" +
+                          "<p><strong>2. Battery Disconnected:</strong> When the battery is disconnected, the charge Q on the plates is now isolated and must remain constant. The potential V can change.</p>" +
+                          "<p><strong>3. Dielectric Inserted:</strong> Inserting a dielectric slab of constant K increases the capacitance to a new value <code>C' = KC</code>.</p>" +
+                          "<p><strong>4. Final Energy:</strong> It's best to use the energy formula involving charge, since charge is the quantity that remains constant. The final energy <code>U_f</code> is:</p>" +
+                          "<p><code>U_f = Q² / (2C')</code></p>" +
+                          "<p>Substituting <code>Q = CV</code> and <code>C' = KC</code>:</p>" +
+                          "<p><code>U_f = (CV)² / (2 * KC) = C²V² / (2KC) = (1/K) * (C V² / 2)</code>.</p>" +
+                          "<p>So, <code>U_f = (1/K) * U_i</code>. The energy decreases.</p>"
+            },
+            {
+                question: "In a series RC circuit, the time constant is τ. The time taken for the potential difference across the capacitor to reach 1/4 of its maximum value during charging is:",
+                options: ["τ ln(4/3)", "τ ln(3/4)", "τ ln(4)", "τ ln(2)"],
+                answer: "τ ln(4/3)",
+                solution: "<p>The potential difference V(t) across a capacitor during charging is given by the formula: <strong>V(t) = V_max(1 - e^(-t/τ))</strong>, where V_max is the maximum voltage (EMF of the source) and τ=RC is the time constant.</p>" +
+                          "<p><strong>1. Set up the condition:</strong> We are given that <code>V(t) = V_max / 4</code>.</p>" +
+                          "<p><code>V_max / 4 = V_max(1 - e^(-t/τ))</code></p>" +
+                          "<p><strong>2. Solve for t:</strong></p>" +
+                          "<p><code>1/4 = 1 - e^(-t/τ)</code></p>" +
+                          "<p><code>e^(-t/τ) = 1 - 1/4 = 3/4</code></p>" +
+                          "<p><strong>3. Use natural logarithm:</strong> Take the natural log (ln) of both sides.</p>" +
+                          "<p><code>ln(e^(-t/τ)) = ln(3/4)</code></p>" +
+                          "<p><code>-t/τ = ln(3) - ln(4)</code></p>" +
+                          "<p><code>t/τ = -(ln(3) - ln(4)) = ln(4) - ln(3) = ln(4/3)</code></p>" +
+                          "<p><code>t = τ ln(4/3)</code>.</p>"
+            },
+            {
+                question: "A conducting rod of length 0.5 m is moving with a uniform velocity of 4 m/s perpendicular to a uniform magnetic field of 0.2 T. The induced emf between the ends of the rod is:",
+                options: ["0.2 V", "0.4 V", "0.6 V", "0.8 V"],
+                answer: "0.4 V",
+                solution: "<p>The induced electromotive force (emf) in a conductor moving through a magnetic field is called <strong>motional emf</strong>.</p>" +
+                          "<p><strong>1. The Formula:</strong> When the velocity (v), magnetic field (B), and length of the conductor (l) are all mutually perpendicular, the induced emf (ε) is given by the simple formula: <code>ε = B * l * v</code>.</p>" +
+                          "<p><strong>2. Identify the values:</strong></p>" +
+                          "<ul><li>B = 0.2 T</li><li>l = 0.5 m</li><li>v = 4 m/s</li></ul>" +
+                          "<p><strong>3. Calculate the emf:</strong></p>" +
+                          "<p><code>ε = (0.2 T) * (0.5 m) * (4 m/s)</code></p>" +
+                          "<p><code>ε = (0.1) * 4 V = 0.4 V</code>.</p>"
+            },
+            {
+                question: "The magnetic flux through a circular loop of resistance 10 Ω is varying according to the relation Φ_B = (6t² + 7t + 1) Wb. The magnitude of the induced current in the loop at t = 2 s is:",
+                options: ["1.9 A", "2.2 A", "3.1 A", "4.3 A"],
+                answer: "3.1 A",
+                solution: "<p>This problem combines Faraday's Law of Induction and Ohm's Law.</p>" +
+                          "<p><strong>1. Faraday's Law:</strong> The magnitude of the induced emf (ε) is the rate of change of magnetic flux.</p>" +
+                          "<p><code>ε = |dΦ_B / dt|</code></p>" +
+                          "<p><code>ε = d/dt (6t² + 7t + 1) = 12t + 7</code>.</p>" +
+                          "<p><strong>2. Calculate emf at t = 2 s:</strong></p>" +
+                          "<p><code>ε(t=2) = 12(2) + 7 = 24 + 7 = 31 V</code>.</p>" +
+                          "<p><strong>3. Ohm's Law:</strong> The induced current (I) is the induced emf divided by the resistance (R).</p>" +
+                          "<p><code>I = ε / R</code></p>" +
+                          "<p><strong>4. Calculate the current:</strong></p>" +
+                          "<p><code>I = 31 V / 10 Ω = 3.1 A</code>.</p>"
+            },
+            {
+                question: "In a series LCR circuit connected to an AC source, at resonance, the power factor is:",
+                options: ["Zero", "0.5", "1", "Infinite"],
+                answer: "1",
+                solution: "<p><strong>1. Definition of Power Factor:</strong> The power factor (cos φ) is defined as the ratio of the resistance (R) to the total impedance (Z) of the circuit. <code>cos φ = R/Z</code>. The impedance is <code>Z = √(R² + (X_L - X_C)²)</code>, where X_L is inductive reactance and X_C is capacitive reactance.</p>" +
+                          "<p><strong>2. Condition for Resonance:</strong> Resonance in a series LCR circuit occurs when the inductive reactance equals the capacitive reactance: <code>X_L = X_C</code>.</p>" +
+                          "<p><strong>3. Impedance at Resonance:</strong> At resonance, the term <code>(X_L - X_C)</code> becomes zero. The impedance Z simplifies to:</p>" +
+                          "<p><code>Z = √(R² + 0²) = R</code>.</p>" +
+                          "<p>At resonance, the total impedance of the circuit is purely resistive and is at its minimum value.</p>" +
+                          "<p><strong>4. Power Factor at Resonance:</strong></p>" +
+                          "<p><code>cos φ = R / Z = R / R = 1</code>.</p>" +
+                          "<p>A power factor of 1 means the voltage and current are in phase, and the circuit behaves as a purely resistive circuit, allowing for maximum power transfer.</p>"
+            },
+            {
+                question: "A long cylindrical wire of radius 'a' carries a steady current 'I' uniformly distributed across its cross-section. The magnetic field B at a distance 'r' from the axis where r < a is:",
+                options: ["μ₀I / (2πr)", "μ₀I / (2πa)", "μ₀Ir / (2πa²)", "Zero"],
+                answer: "μ₀Ir / (2πa²)",
+                solution: "<p>This is solved using <strong>Ampere's Circuital Law</strong> for a point inside the wire.</p>" +
+                          "<p><strong>1. Ampere's Law:</strong> ∮B⋅dl = μ₀I_enc, where I_enc is the current enclosed by the Amperian loop.</p>" +
+                          "<p><strong>2. Choose Amperian Loop:</strong> We choose a circular loop of radius 'r' (where r < a), concentric with the wire's axis.</p>" +
+                          "<p>∮B⋅dl becomes <code>B * (2πr)</code> because B is constant in magnitude and parallel to dl along the loop.</p>" +
+                          "<p><strong>3. Find Enclosed Current (I_enc):</strong> The current is uniformly distributed. The current density is <code>J = I / (πa²)</code>. The enclosed current is this density times the area of our Amperian loop.</p>" +
+                          "<p><code>I_enc = J * (πr²) = (I / πa²) * (πr²) = I * (r²/a²)</code>.</p>" +
+                          "<p><strong>4. Apply Ampere's Law and Solve for B:</strong></p>" +
+                          "<p><code>B * (2πr) = μ₀ * I * (r²/a²)</code></p>" +
+                          "<p><code>B = (μ₀ / 2πr) * I * (r²/a²)</code></p>" +
+                          "<p><code>B = μ₀Ir / (2πa²)</code>. This shows the magnetic field increases linearly from zero at the center to a maximum at the surface.</p>"
+            },
+            {
+                question: "A charge 'q' is moving with velocity 'v' in a region with both a uniform electric field 'E' and a uniform magnetic field 'B'. The net force on the charge (Lorentz force) is given by:",
+                options: ["q(E + B)", "q(E x v + B)", "q(E + v x B)", "q(v + E x B)"],
+                answer: "q(E + v x B)",
+                solution: "<p>The <strong>Lorentz force</strong> is the combination of the electric force and the magnetic force on a point charge due to electromagnetic fields.</p>" +
+                          "<p><strong>1. Electric Force (F_e):</strong> The force exerted by an electric field E on a charge q is given by:</p>" +
+                          "<p><code>F_e = qE</code>. This force is in the same direction as the electric field (for a positive charge).</p>" +
+                          "<p><strong>2. Magnetic Force (F_m):</strong> The force exerted by a magnetic field B on a charge q moving with velocity v is given by:</p>" +
+                          "<p><code>F_m = q(v x B)</code>. This force is perpendicular to both the velocity vector and the magnetic field vector, as determined by the right-hand rule (cross product).</p>" +
+                          "<p><strong>3. Net Force:</strong> The total electromagnetic force, or Lorentz force (F), is the vector sum of the electric and magnetic forces.</p>" +
+                          "<p><code>F = F_e + F_m = qE + q(v x B)</code>.</p>" +
+                          "<p>Factoring out the charge q gives the standard form: <code>F = q(E + v x B)</code>.</p>"
+            },
+            {
+                question: "The magnetic field at the center of a circular coil of N turns, radius r, carrying current I is B. If the number of turns is doubled and the radius is halved, the magnetic field will be:",
+                options: ["B/2", "B", "2B", "4B"],
+                answer: "4B",
+                solution: "<p><strong>1. Formula for Magnetic Field:</strong> The magnetic field at the center of a circular coil is given by the formula:</p>" +
+                          "<p><code>B = (μ₀ * N * I) / (2r)</code></p>" +
+                          "<p><strong>2. Analyze the Changes:</strong></p>" +
+                          "<ul><li>Initial number of turns = N. Final number of turns N' = 2N.</li>" +
+                          "<li>Initial radius = r. Final radius r' = r/2.</li></ul>" +
+                          "<p>The current I and μ₀ are constant.</p>" +
+                          "<p><strong>3. Calculate the New Magnetic Field (B'):</strong></p>" +
+                          "<p><code>B' = (μ₀ * N' * I) / (2r')</code></p>" +
+                          "<p>Substitute the new values:</p>" +
+                          "<p><code>B' = (μ₀ * (2N) * I) / (2 * (r/2)) = (μ₀ * 2N * I) / r</code></p>" +
+                          "<p><strong>4. Compare B' with B:</strong></p>" +
+                          "<p>Let's rearrange B' to look like the original B.</p>" +
+                          "<p><code>B' = 4 * (μ₀ * N * I) / (2r)</code></p>" +
+                          "<p>Since <code>B = (μ₀ * N * I) / (2r)</code>, we can see that:</p>" +
+                          "<p><code>B' = 4B</code>.</p>"
+            },
+            {
+                question: "Two long, parallel straight wires carrying currents 2A and 5A in the same direction are separated by a distance of 1 m. The force of attraction per unit length between them is: (μ₀ = 4π x 10⁻⁷ T·m/A)",
+                options: ["2 x 10⁻⁷ N/m", "2 x 10⁻⁶ N/m", "π x 10⁻⁷ N/m", "π x 10⁻⁶ N/m"],
+                answer: "2 x 10⁻⁶ N/m",
+                solution: "<p><strong>1. Formula for Force per Unit Length:</strong> The force per unit length (F/L) between two long, parallel wires is given by:</p>" +
+                          "<p><code>F/L = (μ₀ * I₁ * I₂) / (2πd)</code></p>" +
+                          "<p>where I₁ and I₂ are the currents and d is the distance between them. Since the currents are in the same direction, the force is attractive.</p>" +
+                          "<p><strong>2. Identify the values:</strong></p>" +
+                          "<ul><li>μ₀ = 4π x 10⁻⁷ T·m/A</li>" +
+                          "<li>I₁ = 2 A</li>" +
+                          "<li>I₂ = 5 A</li>" +
+                          "<li>d = 1 m</li></ul>" +
+                          "<p><strong>3. Substitute and Calculate:</strong></p>" +
+                          "<p><code>F/L = ( (4π x 10⁻⁷) * (2) * (5) ) / (2π * 1)</code></p>" +
+                          "<p>Cancel 2π from the numerator and denominator:</p>" +
+                          "<p><code>F/L = (2 x 10⁻⁷) * 2 * 5 = 20 x 10⁻⁷ N/m</code></p>" +
+                          "<p><strong>4. Final Answer in Standard Form:</strong></p>" +
+                          "<p><code>F/L = 2 x 10⁻⁶ N/m</code>.</p>"
+            }
+        ];
+
+
+        // DOM Elements
+        const loginContainer = document.getElementById('login-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nameInput = document.getElementById('name-input');
+        const questionTextEl = document.getElementById('question-text');
+        const progressTextEl = document.getElementById('progress-text');
+        const optionsListEl = document.getElementById('options-list');
+        const solutionContainer = document.getElementById('solution-container');
+        const solutionTextEl = document.getElementById('solution-text');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const finalScoreText = document.getElementById('final-score-text');
+        const reviewSection = document.getElementById('review-section');
+
+        // State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswerBtn = null;
+        let userAnswers = [];
+
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        showAnswerBtn.addEventListener('click', showSolution);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        restartQuizBtn.addEventListener('click', startQuiz);
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            resultsContainer.style.display = 'none';
+            loginContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            progressTextEl.innerText = `Question ${currentQuestionIndex + 1} of ${questionBank.length}`;
+            questionTextEl.innerText = currentQuestion.question;
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', selectAnswer);
+                optionsListEl.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            solutionContainer.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            showAnswerBtn.style.display = 'inline-block';
+            showAnswerBtn.disabled = false;
+            nextBtn.style.display = 'none';
+            selectedAnswerBtn = null;
+
+            while (optionsListEl.firstChild) {
+                optionsListEl.removeChild(optionsListEl.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            if (selectedAnswerBtn) {
+                selectedAnswerBtn.classList.remove('selected');
+            }
+            selectedAnswerBtn = e.target;
+            selectedAnswerBtn.classList.add('selected');
+            submitBtn.disabled = false;
+        }
+
+        function checkAnswer() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            const isCorrect = selectedAnswerBtn.innerText === currentQuestion.answer;
+            
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: selectedAnswerBtn.innerText,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                score++;
+                selectedAnswerBtn.classList.add('correct');
+            } else {
+                selectedAnswerBtn.classList.add('incorrect');
+                highlightCorrectAnswer();
+            }
+            scoreDisplay.innerText = `Score: ${score}`;
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function showSolution() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: 'Skipped (Viewed Answer)',
+                isCorrect: false
+            });
+
+            solutionTextEl.innerHTML = currentQuestion.solution;
+            solutionContainer.style.display = 'block';
+            highlightCorrectAnswer();
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+        
+        function highlightCorrectAnswer() {
+            const correctAnswer = questionBank[currentQuestionIndex].answer;
+             Array.from(optionsListEl.children).forEach(button => {
+                if (button.innerText === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+
+        function disableAllOptions() {
+            Array.from(optionsListEl.children).forEach(button => button.disabled = true);
+            showAnswerBtn.disabled = true;
+            submitBtn.disabled = true;
+        }
+
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questionBank.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            finalScoreText.innerText = `Your Final Score: ${score} / ${questionBank.length}`;
+            generateReview();
+        }
+
+        function generateReview() {
+            reviewSection.innerHTML = '<h3>Review Your Answers</h3>'; // Clear previous review
+            userAnswers.forEach((result, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+
+                let userAnswerHTML = '';
+                if (result.userChoice === 'Skipped (Viewed Answer)') {
+                    userAnswerHTML = `<p class="review-user-answer skipped">Your Action: ${result.userChoice}</p>`;
+                } else {
+                    const status = result.isCorrect ? 'Correct' : 'Incorrect';
+                    const cssClass = result.isCorrect ? 'correct' : 'incorrect';
+                    userAnswerHTML = `<p class="review-user-answer ${cssClass}">Your Answer: ${result.userChoice} (${status})</p>`;
+                }
+
+                reviewItem.innerHTML = `
+                    <p class="review-question">${index + 1}. ${result.question}</p>
+                    ${userAnswerHTML}
+                    <p class="review-correct-answer">Correct Answer: ${result.answer}</p>
+                    <button class="solution-toggle-btn">Show Detailed Solution</button>
+                    <div class="detailed-solution" style="display: none;">
+                        ${result.solution}
+                    </div>
+                `;
+                reviewSection.appendChild(reviewItem);
+            });
+
+            // Add event listeners for the new toggle buttons
+            document.querySelectorAll('.solution-toggle-btn').forEach(button => {
+                button.addEventListener('click', e => {
+                    const solutionDiv = e.target.nextElementSibling;
+                    const isVisible = solutionDiv.style.display === 'block';
+                    solutionDiv.style.display = isVisible ? 'none' : 'block';
+                    e.target.textContent = isVisible ? 'Show Detailed Solution' : 'Hide Detailed Solution';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIVA-TRIVIA Physics Quiz: Waves & Optics (JEE Level)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Body & Page Container Styling --- */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color:  #2C2945;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align top */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .main-container {
+           background-color:#5A5D8A;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Page Sections --- */
+        .page-section {
+            padding: 30px 40px;
+        }
+
+        /* --- Login Page Styling --- */
+        #login-container {
+            text-align: center;
+        }
+        #login-container h1 {
+            font-family: 'Merriweather', serif;
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        #login-container p {
+            color: #f0f2f5;
+            margin-bottom: 30px;
+        }
+        #name-input {
+            width: 80%;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        #start-quiz-btn {
+            background-color: #3498db;
+            color: white;
+            font-size: 1.1em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-quiz-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* --- Quiz Container Styling --- */
+        #quiz-container { display: none; }
+        .quiz-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px 30px;
+        }
+        .quiz-header-content {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+        }
+
+        .quiz-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        #score-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #2c3e50;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+        #progress-text {
+            font-size: 0.9em;
+            color: #f0f2f5;
+            margin-bottom: 10px;
+        }
+        #question-text {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .options-list {
+            list-style-type: none; padding: 0; margin: 0;
+        }
+        .option-btn {
+            display: block; width: 100%;background-color:#a9abc4;
+            border: 2px solid #e0e0e0; color: #333; padding: 15px;
+            margin-bottom: 10px; text-align: left; font-size: 1em;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #e9ecef; border-color: #3498db;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        .option-btn.selected {
+            background-color: #a3bde3;
+            border-color: #3498db;
+            font-weight: bold;
+        }
+        .option-btn.correct {
+            background-color: #d4edda; border-color: #28a745;
+            color: #155724; font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #f8d7da; border-color: #dc3545;
+            color: #721c24; font-weight: bold;
+        }
+
+
+        /* --- Solution Styling --- */
+        .solution-container { /* Renamed for review page */
+            background-color: #3e4061;
+            border: 1px solid #7f8c8d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+        .solution-container h3 {
+            margin-top: 0;
+            color: #2ecc71;
+            font-family: 'Merriweather', serif;
+        }
+        .solution-text p, .solution-text li, .detailed-solution p, .detailed-solution li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #ecf0f1;
+        }
+        .solution-text strong, .detailed-solution strong {
+            color: #f1c40f;
+        }
+        .solution-text code, .detailed-solution code {
+            background-color: #2c3e50;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
+        .quiz-footer {
+            padding: 20px 30px;
+            text-align: right;
+            border-top: 1px solid #7a7da9;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .quiz-btn {
+            color: white; border: none;
+            padding: 10px 25px; font-size: 1em; border-radius: 8px;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .quiz-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #submit-btn { background-color: #3498db; }
+        #submit-btn:hover:not(:disabled) { background-color: #2980b9; }
+
+        #show-answer-btn { background-color: #f39c12; }
+        #show-answer-btn:hover:not(:disabled) { background-color: #e67e22; }
+
+        #next-btn { background-color: #2ecc71; display: none; }
+        #next-btn:hover { background-color: #27ae60; }
+
+
+        /* --- Results Page Styling --- */
+        #results-container {
+            display: none;
+            text-align: center;
+            padding: 30px 40px;
+            color: #ffffff;
+        }
+        #results-container h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        #final-score-text {
+             font-size: 1.8em;
+             font-weight: bold;
+             color: #3498db;
+             margin-bottom: 30px;
+        }
+        #restart-quiz-btn {
+            background-color: #e74c3c;
+            color: white; font-size: 1.1em; padding: 15px 40px;
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 30px;
+        }
+        #restart-quiz-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* --- Review Section Styling --- */
+        #review-section {
+            text-align: left;
+            margin-top: 20px;
+        }
+        #review-section h3 {
+            border-bottom: 2px solid #7a7da9;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .review-item {
+            background-color: #4b4e78;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .review-question {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 0;
+            color: #ffffff;
+        }
+        .review-user-answer {
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .review-user-answer.correct { background-color: #d4edda; color: #155724; }
+        .review-user-answer.incorrect { background-color: #f8d7da; color: #721c24; }
+        .review-user-answer.skipped { background-color: #fff3cd; color: #856404; }
+
+        .review-correct-answer {
+            color: #d4edda;
+            font-style: italic;
+        }
+        .solution-toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .solution-toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .detailed-solution {
+             border-top: 1px solid #7a7da9;
+             margin-top: 15px;
+             padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- ===== 1. LOGIN PAGE ===== -->
+        <div class="page-section" id="login-container">
+            <h1>VIVA-TRIVIA</h1>
+            <p>Enter your name to begin the<br><strong>Waves & Optics Quiz (JEE Level)</strong></p>
+            <input type="text" id="name-input" placeholder="Your Full Name" required>
+            <br>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </div>
+
+        <!-- ===== 2. QUIZ PAGE ===== -->
+        <div id="quiz-container">
+            <div class="quiz-header">
+                 <div class="quiz-header-content">
+                    <h1>Waves & Optics</h1>
+                    <div id="score-display">Score: 0</div>
+                </div>
+            </div>
+            <div class="page-section">
+                <p id="progress-text">Question 1 of 10</p>
+                <h2 id="question-text">Loading question...</h2>
+                <ul class="options-list" id="options-list"></ul>
+
+                <div id="solution-container" class="solution-container" style="display: none;">
+                    <h3>Solution:</h3>
+                    <div id="solution-text" class="solution-text"></div>
+                </div>
+
+            </div>
+            <div class="quiz-footer">
+                <button id="show-answer-btn" class="quiz-btn">Show Answer</button>
+                <button id="submit-btn" class="quiz-btn">Submit</button>
+                <button id="next-btn" class="quiz-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- ===== 3. RESULTS PAGE ===== -->
+        <div class="page-section" id="results-container">
+            <h2>Quiz Complete!</h2>
+            <p id="final-score-text">Your Final Score: 0 / 0</p>
+            <button id="restart-quiz-btn">Try Again</button>
+            <div id="review-section">
+                <!-- Review content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionBank = [
+            {
+                question: "In a Young's double-slit experiment (YDSE), the slit separation is 0.5 mm and the screen is 1.5 m away. If the wavelength of light used is 600 nm, the fringe width is:",
+                options: ["1.2 mm", "1.5 mm", "1.8 mm", "2.0 mm"],
+                answer: "1.8 mm",
+                solution: "<p>The fringe width (β) in a YDSE setup is given by the formula: <strong>β = (λ * D) / d</strong></p>" +
+                          "<p><strong>1. Identify the given values and convert to SI units:</strong></p>" +
+                          "<ul><li>Wavelength (λ) = 600 nm = 600 x 10⁻⁹ m</li>" +
+                          "<li>Distance to screen (D) = 1.5 m</li>" +
+                          "<li>Slit separation (d) = 0.5 mm = 0.5 x 10⁻³ m</li></ul>" +
+                          "<p><strong>2. Substitute the values into the formula:</strong></p>" +
+                          "<p><code>β = ( (600 x 10⁻⁹ m) * (1.5 m) ) / (0.5 x 10⁻³ m)</code></p>" +
+                          "<p><code>β = (900 x 10⁻⁹) / (0.5 x 10⁻³) m</code></p>" +
+                          "<p><code>β = 1800 x 10⁻⁶ m = 1.8 x 10⁻³ m</code></p>" +
+                          "<p><strong>3. Convert to millimeters:</strong></p>" +
+                          "<p><code>1.8 x 10⁻³ m = 1.8 mm</code>.</p>"
+            },
+            {
+                question: "A train moving at 20 m/s sounds a whistle of frequency 500 Hz. An observer is on a platform towards which the train is moving. The apparent frequency heard is: (Speed of sound = 340 m/s)",
+                options: ["471 Hz", "500 Hz", "531 Hz", "567 Hz"],
+                answer: "531 Hz",
+                solution: "<p>This is a classic case of the <strong>Doppler Effect</strong> where the source is moving towards a stationary observer.</p>" +
+                          "<p><strong>1. The Formula:</strong> The apparent frequency (f') is given by <code>f' = f * (v / (v - v_s))</code>, where:</p>" +
+                          "<ul><li><code>f</code> is the actual frequency (500 Hz)</li>" +
+                          "<li><code>v</code> is the speed of sound (340 m/s)</li>" +
+                          "<li><code>v_s</code> is the speed of the source (20 m/s)</li></ul>" +
+                          "<p>The minus sign is used in the denominator because the source is moving towards the observer, causing the wavefronts to 'bunch up' and increase the frequency.</p>" +
+                          "<p><strong>2. Substitute and Calculate:</strong></p>" +
+                          "<p><code>f' = 500 * (340 / (340 - 20))</code></p>" +
+                          "<p><code>f' = 500 * (340 / 320) = 500 * (17 / 16)</code></p>" +
+                          "<p><code>f' = 500 * 1.0625 = 531.25 Hz</code></p>" +
+                          "<p>The closest answer is 531 Hz.</p>"
+            },
+            {
+                question: "A biconvex lens has radii of curvature 20 cm and 30 cm. If the refractive index (n) of the lens material is 1.5, its focal length is:",
+                options: ["12 cm", "20 cm", "24 cm", "30 cm"],
+                answer: "24 cm",
+                solution: "<p>This problem is solved using the <strong>Lens Maker's Formula</strong>.</p>" +
+                          "<p><strong>1. The Formula:</strong> <code>1/f = (n - 1) * (1/R₁ - 1/R₂)</code>. By convention, for a biconvex lens, the radius of the first surface (R₁) is positive and the radius of the second surface (R₂) is negative.</p>" +
+                          "<p><strong>2. Identify the values:</strong></p>" +
+                          "<ul><li>n = 1.5</li><li>R₁ = +20 cm</li><li>R₂ = -30 cm</li></ul>" +
+                          "<p><strong>3. Substitute into the formula:</strong></p>" +
+                          "<p><code>1/f = (1.5 - 1) * (1/20 - 1/(-30))</code></p>" +
+                          "<p><code>1/f = 0.5 * (1/20 + 1/30)</code></p>" +
+                          "<p><code>1/f = 0.5 * ( (3 + 2) / 60 ) = 0.5 * (5/60) = (1/2) * (1/12) = 1/24</code></p>" +
+                          "<p><strong>4. Solve for f:</strong></p>" +
+                          "<p>If <code>1/f = 1/24</code>, then <code>f = 24 cm</code>.</p>"
+            },
+            {
+                question: "In a single-slit diffraction pattern, the first minimum for red light (λ = 660 nm) coincides with the first maximum of some other wavelength λ'. What is λ'?",
+                options: ["330 nm", "440 nm", "550 nm", "600 nm"],
+                answer: "440 nm",
+                solution: "<p>This problem requires knowing the conditions for minima and maxima in single-slit diffraction.</p>" +
+                          "<p><strong>1. Condition for Minima:</strong> The condition for the nth minimum is <code>a sinθ = nλ</code>, where 'a' is the slit width.</p>" +
+                          "<p>For the first minimum (n=1) of red light: <code>a sinθ = (1) * λ_red = 660 nm</code>.</p>" +
+                          "<p><strong>2. Condition for Maxima:</strong> The condition for the nth secondary maximum is approximately <code>a sinθ = (n + 1/2)λ</code>.</p>" +
+                          "<p>For the first maximum (n=1) of the unknown wavelength λ': <code>a sinθ = (1 + 1/2)λ' = (3/2)λ'</code>.</p>" +
+                          "<p><strong>3. Equate the conditions:</strong> Since the positions coincide, their 'a sinθ' values are the same.</p>" +
+                          "<p><code>660 nm = (3/2)λ'</code></p>" +
+                          "<p><strong>4. Solve for λ':</strong></p>" +
+                          "<p><code>λ' = (2/3) * 660 nm = 2 * 220 nm = 440 nm</code>.</p>"
+            },
+            {
+                question: "The critical angle for a medium with respect to vacuum is 45°. The polarizing angle (Brewster's angle) for this medium is:",
+                options: ["tan⁻¹(1/√2)", "sin⁻¹(1/√2)", "tan⁻¹(√2)", "45°"],
+                answer: "tan⁻¹(√2)",
+                solution: "<p>This problem connects two concepts: total internal reflection and polarization by reflection.</p>" +
+                          "<p><strong>1. Find Refractive Index (n) from Critical Angle (C):</strong></p>" +
+                          "<p>The formula is <code>sin(C) = 1/n</code> (since the other medium is vacuum with n=1).</p>" +
+                          "<p><code>sin(45°) = 1/n  =>  1/√2 = 1/n  =>  n = √2</code>.</p>" +
+                          "<p><strong>2. Find Polarizing Angle (i_p) using Brewster's Law:</strong></p>" +
+                          "<p>Brewster's Law states that <code>tan(i_p) = n</code>, where n is the refractive index of the medium.</p>" +
+                          "<p><code>tan(i_p) = √2</code>.</p>" +
+                          "<p><strong>3. Final Answer:</strong></p>" +
+                          "<p>Therefore, the polarizing angle is <code>i_p = tan⁻¹(√2)</code>.</p>"
+            },
+            {
+                question: "A transverse wave is described by y(x,t) = 3.0 sin(36t + 0.018x + π/4), where x and y are in cm and t is in s. The velocity of the wave is:",
+                options: ["2000 cm/s, in the -x direction", "2000 cm/s, in the +x direction", "1000 cm/s, in the -x direction", "1000 cm/s, in the +x direction"],
+                answer: "2000 cm/s, in the -x direction",
+                solution: "<p>The solution requires analyzing the standard wave equation.</p>" +
+                          "<p><strong>1. Standard Wave Equation:</strong> The general form is <code>y(x,t) = A sin(ωt ± kx + φ)</code>.</p>" +
+                          "<p>Comparing this to the given equation: <code>y(x,t) = 3.0 sin(36t + 0.018x + π/4)</code>, we can identify:</p>" +
+                          "<ul><li>Angular frequency (ω) = 36 rad/s</li><li>Wave number (k) = 0.018 rad/cm</li></ul>" +
+                          "<p><strong>2. Determine Direction:</strong> The sign between the 'ωt' and 'kx' terms is positive (+). This indicates that the wave is traveling in the <strong>negative x-direction</strong>.</p>" +
+                          "<p><strong>3. Calculate Wave Speed (v):</strong> The speed of the wave is given by the ratio of the angular frequency to the wave number.</p>" +
+                          "<p><code>v = ω / k</code></p>" +
+                          "<p><code>v = 36 / 0.018 = 36 / (18/1000) = 36 * 1000 / 18 = 2 * 1000 = 2000 cm/s</code>.</p>" +
+                          "<p>So, the velocity is 2000 cm/s in the -x direction.</p>"
+            },
+            {
+                question: "A string of length L is fixed at both ends. It is vibrating in its third harmonic. The wavelength (λ) of the standing wave is:",
+                options: ["L", "L/2", "2L/3", "3L/2"],
+                answer: "2L/3",
+                solution: "<p>For a string fixed at both ends, the ends must be nodes. This restricts the possible wavelengths of standing waves.</p>" +
+                          "<p><strong>1. Condition for Standing Waves:</strong> The length of the string (L) must be an integer multiple of half-wavelengths.</p>" +
+                          "<p><code>L = n * (λ/2)</code>, where 'n' is the harmonic number (n = 1, 2, 3, ...).</p>" +
+                          "<p><strong>2. Apply to the Third Harmonic:</strong></p>" +
+                          "<p>For the third harmonic, n = 3.</p>" +
+                          "<p><code>L = 3 * (λ/2)</code></p>" +
+                          "<p><strong>3. Solve for Wavelength (λ):</strong></p>" +
+                          "<p>Rearranging the equation gives:</p>" +
+                          "<p><code>2L = 3λ  =>  λ = 2L / 3</code>.</p>"
+            },
+            {
+                question: "Two coherent sources in an interference pattern have an intensity ratio of 81:1. The ratio of the maximum to minimum intensity (I_max / I_min) in the pattern is:",
+                options: ["81:1", "10:8", "25:16", "25:4"],
+                answer: "25:16",
+                solution: "<p>This problem relates the intensity of sources to the resulting interference pattern.</p>" +
+                          "<p><strong>1. Relate Intensity and Amplitude:</strong> Intensity (I) is proportional to the square of the amplitude (A). <code>I ∝ A²</code>.</p>" +
+                          "<p>Given <code>I₁ / I₂ = 81 / 1</code>, we have <code>A₁² / A₂² = 81 / 1</code>.</p>" +
+                          "<p>Taking the square root gives the amplitude ratio: <code>A₁ / A₂ = 9 / 1</code>. Let A₁ = 9a and A₂ = a.</p>" +
+                          "<p><strong>2. Find Maximum and Minimum Amplitudes:</strong></p>" +
+                          "<ul><li>Maximum amplitude (constructive interference): <code>A_max = A₁ + A₂ = 9a + a = 10a</code>.</li>" +
+                          "<li>Minimum amplitude (destructive interference): <code>A_min = A₁ - A₂ = 9a - a = 8a</code>.</li></ul>" +
+                          "<p><strong>3. Find Maximum and Minimum Intensities:</strong></p>" +
+                          "<ul><li><code>I_max ∝ A_max² = (10a)² = 100a²</code></li>" +
+                          "<li><code>I_min ∝ A_min² = (8a)² = 64a²</code></li></ul>" +
+                          "<p><strong>4. Calculate the Ratio:</strong></p>" +
+                          "<p><code>I_max / I_min = (100a²) / (64a²) = 100 / 64</code>.</p>" +
+                          "<p>Simplifying the fraction by dividing by 4 gives <code>25 / 16</code>. So the ratio is 25:16.</p>"
+            },
+            {
+                question: "An unpolarized light beam is incident on a surface at the polarizing angle (Brewster's angle). The reflected beam is:",
+                options: ["Unpolarized", "Completely plane-polarized", "Partially polarized", "Circularly polarized"],
+                answer: "Completely plane-polarized",
+                solution: "<p>This is the definition and result of <strong>Brewster's Law</strong>.</p>" +
+                          "<p><strong>1. Brewster's Law:</strong> When unpolarized light is incident on an interface between two dielectric media, at a specific angle called the polarizing angle (or Brewster's angle, i_p), the reflected light is perfectly plane-polarized with its electric field vector perpendicular to the plane of incidence.</p>" +
+                          "<p><strong>2. Condition:</strong> This phenomenon occurs when the reflected ray and the refracted ray are perpendicular to each other. This leads to the mathematical condition <code>tan(i_p) = n</code>, where n is the refractive index of the second medium relative to the first.</p>" +
+                          "<p><strong>3. Conclusion:</strong> By definition, the light reflected at the polarizing angle is completely plane-polarized. The refracted light, however, is partially polarized.</p>"
+            },
+            {
+                question: "An astronomical telescope has an objective lens of focal length 100 cm and an eyepiece of focal length 4 cm. For viewing a distant object in normal adjustment (final image at infinity), the magnifying power is:",
+                options: ["20", "25", "50", "400"],
+                answer: "25",
+                solution: "<p>The magnifying power of a telescope depends on how the final image is viewed.</p>" +
+                          "<p><strong>1. Normal Adjustment:</strong> 'Normal adjustment' means the final image is formed at infinity. This provides the most relaxed viewing. For this to happen, the distance between the objective and eyepiece must be <code>L = f_o + f_e</code>.</p>" +
+                          "<p><strong>2. Formula for Magnifying Power (M) in Normal Adjustment:</strong></p>" +
+                          "<p>The angular magnification is given by the ratio of the focal length of the objective (f_o) to the focal length of the eyepiece (f_e).</p>" +
+                          "<p><code>M = f_o / f_e</code></p>" +
+                          "<p><strong>3. Substitute and Calculate:</strong></p>" +
+                          "<ul><li>f_o = 100 cm</li>" +
+                          "<li>f_e = 4 cm</li></ul>" +
+                          "<p><code>M = 100 cm / 4 cm = 25</code>.</p>" +
+                          "<p>The magnifying power is 25.</p>"
+            }
+        ];
+
+
+        // DOM Elements
+        const loginContainer = document.getElementById('login-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nameInput = document.getElementById('name-input');
+        const questionTextEl = document.getElementById('question-text');
+        const progressTextEl = document.getElementById('progress-text');
+        const optionsListEl = document.getElementById('options-list');
+        const solutionContainer = document.getElementById('solution-container');
+        const solutionTextEl = document.getElementById('solution-text');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const finalScoreText = document.getElementById('final-score-text');
+        const reviewSection = document.getElementById('review-section');
+
+        // State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswerBtn = null;
+        let userAnswers = [];
+
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        showAnswerBtn.addEventListener('click', showSolution);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        restartQuizBtn.addEventListener('click', startQuiz);
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            resultsContainer.style.display = 'none';
+            loginContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            progressTextEl.innerText = `Question ${currentQuestionIndex + 1} of ${questionBank.length}`;
+            questionTextEl.innerText = currentQuestion.question;
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', selectAnswer);
+                optionsListEl.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            solutionContainer.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            showAnswerBtn.style.display = 'inline-block';
+            showAnswerBtn.disabled = false;
+            nextBtn.style.display = 'none';
+            selectedAnswerBtn = null;
+
+            while (optionsListEl.firstChild) {
+                optionsListEl.removeChild(optionsListEl.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            if (selectedAnswerBtn) {
+                selectedAnswerBtn.classList.remove('selected');
+            }
+            selectedAnswerBtn = e.target;
+            selectedAnswerBtn.classList.add('selected');
+            submitBtn.disabled = false;
+        }
+
+        function checkAnswer() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            const isCorrect = selectedAnswerBtn.innerText === currentQuestion.answer;
+            
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: selectedAnswerBtn.innerText,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                score++;
+                selectedAnswerBtn.classList.add('correct');
+            } else {
+                selectedAnswerBtn.classList.add('incorrect');
+                highlightCorrectAnswer();
+            }
+            scoreDisplay.innerText = `Score: ${score}`;
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function showSolution() {
+            disableAllOptions();
+            const currentQuestion = questionBank[currentQuestionIndex];
+            userAnswers.push({
+                question: currentQuestion.question,
+                solution: currentQuestion.solution,
+                answer: currentQuestion.answer,
+                userChoice: 'Skipped (Viewed Answer)',
+                isCorrect: false
+            });
+
+            solutionTextEl.innerHTML = currentQuestion.solution;
+            solutionContainer.style.display = 'block';
+            highlightCorrectAnswer();
+            submitBtn.style.display = 'none';
+            showAnswerBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        }
+        
+        function highlightCorrectAnswer() {
+            const correctAnswer = questionBank[currentQuestionIndex].answer;
+             Array.from(optionsListEl.children).forEach(button => {
+                if (button.innerText === correctAnswer) {
+                    button.classList.add('correct');
+                }
+            });
+        }
+
+        function disableAllOptions() {
+            Array.from(optionsListEl.children).forEach(button => button.disabled = true);
+            showAnswerBtn.disabled = true;
+            submitBtn.disabled = true;
+        }
+
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questionBank.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            finalScoreText.innerText = `Your Final Score: ${score} / ${questionBank.length}`;
+            generateReview();
+        }
+
+        function generateReview() {
+            reviewSection.innerHTML = '<h3>Review Your Answers</h3>'; // Clear previous review
+            userAnswers.forEach((result, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+
+                let userAnswerHTML = '';
+                if (result.userChoice === 'Skipped (Viewed Answer)') {
+                    userAnswerHTML = `<p class="review-user-answer skipped">Your Action: ${result.userChoice}</p>`;
+                } else {
+                    const status = result.isCorrect ? 'Correct' : 'Incorrect';
+                    const cssClass = result.isCorrect ? 'correct' : 'incorrect';
+                    userAnswerHTML = `<p class="review-user-answer ${cssClass}">Your Answer: ${result.userChoice} (${status})</p>`;
+                }
+
+                reviewItem.innerHTML = `
+                    <p class="review-question">${index + 1}. ${result.question}</p>
+                    ${userAnswerHTML}
+                    <p class="review-correct-answer">Correct Answer: ${result.answer}</p>
+                    <button class="solution-toggle-btn">Show Detailed Solution</button>
+                    <div class="detailed-solution" style="display: none;">
+                        ${result.solution}
+                    </div>
+                `;
+                reviewSection.appendChild(reviewItem);
+            });
+
+            // Add event listeners for the new toggle buttons
+            document.querySelectorAll('.solution-toggle-btn').forEach(button => {
+                button.addEventListener('click', e => {
+                    const solutionDiv = e.target.nextElementSibling;
+                    const isVisible = solutionDiv.style.display === 'block';
+                    solutionDiv.style.display = isVisible ? 'none' : 'block';
+                    e.target.textContent = isVisible ? 'Show Detailed Solution' : 'Hide Detailed Solution';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

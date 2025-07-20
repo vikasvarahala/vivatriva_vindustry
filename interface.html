@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+   <title>
+    VIVA_TTRIVIA
+   </title>
+    <link rel="icon" type="images/x-icon"  href="logo.jpg">
+    
+    
+</head>
+<style>
+    .nav{
+         background-color:#5A5D8A;
+         padding: 5px;
+         margin: 0px;
+         font-size: x-large;
+         height: 40px;
+        border-radius: 5px;
+         
+    }
+    span{
+        position: relative;
+        top: 2px;
+        background-color: #a9abc4;
+        padding: 5px;
+        margin: 10px;
+        border-radius: 10px;
+    }
+    body{
+        background-color: #2C2945;
+    }
+    .conatiner{
+       
+       justify-content: center;
+        margin: 10px;
+        padding: 10px;
+        display: grid;
+        background-color:#5A5D8A;
+        width:700px;
+       position: relative;
+       left: 300px;
+       top: 100px;
+       border-radius: 10px;
+       border:solid rgb(213, 147, 213) 5px;
+       box-shadow: 0 0 30px 10px rgb(199, 113, 199) ;
+
+       
+    }
+    .box{
+        margin: 10px;
+        padding: 5px;
+        border: solid #a9abc4 5px ;
+        color: whitesmoke;
+        width: 200px;
+        height: 150px;
+        text-align: center;
+        border-radius: 10px;
+        
+    transition: transform 0.5s ease-in-out;
+
+    }
+    .box:hover{
+    transform: scale(1.1);
+}
+   
+    .box1{
+        grid-column-start: 1;
+        row-gap: 10px;
+        column-gap: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    .box2{
+        grid-column-start: 2;
+          row-gap: 10px;
+        column-gap: 10px;
+        
+    }
+    .box3{
+        grid-column-start: 3;
+        
+    }
+    .light{
+        display: flex;
+
+    }
+    .lamp{
+        position: relative;
+        top: -425px;
+        left: 20px;
+        height: 400px;
+        width: 1px;
+        background-color: white;
+
+        
+    }
+    .lamp2{
+        position: relative;
+        top: -425px;
+        left: 50px;
+        height: 300px;
+        width: 1px;
+        background-color: white;
+
+    }
+    .bulb{
+        background-color: whitesmoke;
+        height: 20px;
+        width: 20px;
+        position: relative;
+        top: -25px;
+        left: 10px;
+        border-radius: 5px;
+       box-shadow: 0 0 30px 10px rgb(199, 113, 199) ;
+    }
+    .buld2{
+        background-color: whitesmoke;
+        height: 20px;
+        width: 20px;
+        position: relative;
+        top: -125px;
+        left: 39px;
+        border-radius: 5px;
+       box-shadow: 0 0 30px 10px rgb(199, 113, 199) ;
+
+    }
+    .start{
+        background-color: rgb(175, 56, 175) ;
+        width: 100px;
+        text-align: center;
+        border-radius: 5px;
+
+    }
+</style>
+<body>
+    <div class="nav">
+        <span id="un">
+            username
+        </span>
+    </div>
+    <div class="conatiner">
+        <div  class="box box1" id="cse">
+            <h3>
+                COMPUTER SCIENCE
+            </h3>
+            <div class="start cs">
+                <h4>Start</h4>
+            </div>
+        </div>
+        <div  class="box box2" id="phy">
+            <h3>
+                PHYSICS
+            </h3>
+             <div class="start">
+                <h4>Start</h4>
+            </div>
+        </div>
+        <div id="math" class="box box3">
+            <h3>
+                MATHS
+            </h3>
+             <div class="start">
+                <h4>Start</h4>
+            </div>
+        </div>
+        <div id="biology" class="box box4">
+            <h3>
+                BIOLOGY
+            </h3>
+             <div class="start">
+                <h4>Start</h4>
+            </div>
+        </div>
+        <div id="chemistry" class="box box5">
+            <h3>CHEMISTRY</h3>
+             <div class="start">
+                <h4>Start</h4>
+            </div>
+        </div>
+
+    </div>
+<div class="light">
+<div class="lamp">
+
+  </div>
+  <div class="bulb">
+
+  </div>
+  <div class="lamp2">
+
+  </div>
+  <div class="buld2">
+
+  </div>
+    
+</div>
+<script>
+    var cse = document.getElementById("cse");
+    
+    cse.addEventListener('click',function(){
+        window.location.href="cse.html";
+    });
+
+var p = document.getElementById("phy")
+p.addEventListener('click',function(){
+    window.location.href="physics.html";
+});
+
+ var m = document.getElementById("math") 
+ m.addEventListener('click',function(){
+    window.location.href="math.html";
+});
+</script>
+  
+</body>
+</html>

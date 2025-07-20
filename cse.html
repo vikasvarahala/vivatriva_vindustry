@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+  body{
+    background-color: #2C2945;
+    display: grid;
+    
+    justify-content: center;
+  }
+    .container {
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        display: grid;
+        width: 700px;
+        border: solid;
+        background-color:#5A5D8A;
+         border:solid rgb(213, 147, 213) 5px;
+       box-shadow: 0 0 30px 10px rgb(199, 113, 199) ;
+
+    }
+    .headding{
+        text-align: center;
+       color:#a9abc4;
+        
+        
+      
+    }
+
+
+
+
+    .box {
+        
+        padding: 10px;
+        border: solid;
+        margin: 10px;
+        height: 150px;
+        width: 150px;
+        border-radius: 10px;
+        
+transition: transform 0.3s ease-in-out;
+    }
+.box:hover{
+    transform: scale(1.1);
+    background-color: slateblue;
+    
+}
+    .box1 {
+        background-color: rgb(147, 112, 216);
+        text-align: center;
+        color: white;
+        align-items: center;
+       grid-column-start: 1 ;
+       
+         
+
+    }
+   
+
+    .box2 {
+        background-color: rgb(235, 182, 163);
+        text-align: center;
+        color: white;
+        align-items: center;
+       grid-column-start: 2;
+       
+    }
+   
+
+    .box3 {
+        background-color: rgb(154, 154, 98);
+        text-align: center;
+        color: white;
+        align-items: center;
+      grid-column-start: 3;
+      
+
+    }
+    
+
+    .box4 {
+        background-color: rgb(116, 200, 206);
+        text-align: center;
+        color: white;
+        align-items: center;
+        grid-column-start: 1;
+        
+    }
+   
+
+    .box5 {
+        background-color: rgb(101, 98, 98);
+        text-align: center;
+        color: white;
+        align-items: center;
+        grid-column-start: 2;
+      
+       
+    }
+    
+    
+    
+
+    .box6 {
+        background-color: rgb(244, 204, 129);
+        text-align: center;
+        color: white;
+        align-items: center;
+        grid-column-start: 3;
+        
+
+    }
+   
+
+    .box7 {
+        background-color: rgb(231, 155, 155);
+        text-align: center;
+        color: white;
+        align-items: center;
+        grid-column-start: 1;
+       
+
+    }
+   
+
+    
+
+    .box8 {
+        grid-column-start: 8;
+        background-color: whitesmoke;
+        text-align: center;
+
+        align-items: center;
+       grid-column-start: 2;
+
+    }
+    
+
+    .box9 {
+        grid-column-start: 9;
+        background-color: rgb(135, 190, 135);
+        text-align: center;
+        color: white;
+        align-items: center;
+        grid-column-start: 3;
+
+    }
+   
+
+    .sh{
+        margin: 10px;    
+        padding: 3px;
+        color: white;
+        background-color: purple;
+        width: 300px;
+        text-align: center;
+        border-radius: 10px;
+        font-family:"Raleway", sans-serif;
+                
+        }
+</style>
+
+<body>
+    
+    <div class="headding">
+        <h1> VivaTrivia</h1>
+ 
+    </div>
+    <h3 class="sh">
+        Computer Science 
+    </h3>
+    <div class="container">
+
+        <div class="box box1" id="py">
+            <img src="https://tse4.mm.bing.net/th/id/OIP.fyuuf1u74xNdYAzdTFI9LwHaHa?pid=Api&P=0&h=180" alt="python"
+                height="50px">
+            <h3>Python</h3>
+        </div>
+        <div class="box box2" id="java">
+            <img src="https://download.logo.wine/logo/Java_(programming_language)/Java_(programming_language)-Logo.wine.png"
+                alt="java" height="80px">
+            <h3>Java</h3>
+        </div>
+        <div class="box box3" id="fullstack">
+            <img src="https://e7.pngegg.com/pngimages/651/48/png-clipart-web-development-responsive-web-design-web-developer-software-developer-outgoing-web-design-logo.png"
+                alt="web" height="50px">
+            <h3>Full stack</h3>
+        </div>
+        <div class="box box4" id="sql">
+            <img src="https://clipart-library.com/2023/RcdgAAE9i.png" alt="sql" height="70px">
+            <h3>
+                <h3>Sql</h3>
+            </h3>
+
+        </div>
+        <div class="box box5" id="ds">
+            <img src="https://user-images.githubusercontent.com/104568275/186131673-9ffff84c-21b4-421b-b956-643aa0fa7dbd.png"
+                alt="ds" height="70px">
+            <h3>Data Structures</h3>
+        </div>
+        <div class="box box6" id="os">
+            <img src="https://static.vecteezy.com/system/resources/previews/027/139/899/original/square-shape-os-logo-icon-premium-os-logo-icon-vector-art-free-png.png"
+                alt="os" height="60px">
+            <h3>Opearating System</h3>
+        </div>
+        <div class="box box7" id="ml">
+            <img src="https://i1.wp.com/dafriedman97.github.io/mlbook/_static/logo.png" alt="ml" height="50px">
+            <h3>Mechine Learnig</h3>
+        </div>
+        <div class="box box8" id="ai">
+            <img src="https://img.freepik.com/premium-vector/artificial-intelligence-circuit-line-style-machine-learning-design-smart-network-digital-technology-ai-vector-illustration_41981-2774.jpg?w=2000"
+                alt="ai" height="50px">
+            <h3>Artificial Intelligence</h3>
+        </div>
+        <div class="box box9" id="c">
+            <img src="https://logodix.com/logo/1138067.png" alt="c#" height=50px">
+            <h3>
+                C#
+            </h3>
+        </div>
+    </div>
+   
+    <script src="script.js"></script>
+</body>
+
+</html>

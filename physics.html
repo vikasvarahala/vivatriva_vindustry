@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: #2C2945;
+        display: grid;
+
+        justify-content: center;
+    }
+
+    .container2 {
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        display: grid;
+        width: 700px;
+        border: solid;
+        background-color: #5A5D8A;
+        border: solid rgb(213, 147, 213) 5px;
+        box-shadow: 0 0 30px 10px rgb(199, 113, 199);
+
+
+    }
+
+    .headding {
+        text-align: center;
+        color: #a9abc4;
+
+
+
+    }
+
+
+
+
+    .box {
+        display: inline-block;
+        padding: 10px;
+        border: solid;
+        margin: 10px;
+        height: 150px;
+        width: 150px;
+        border-radius: 10px;
+        white-space: wrap;
+
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .box:hover {
+        transform: scale(1.1);
+        background-color: slateblue;
+
+    }
+
+
+    .sh {
+        margin: 10px;
+        padding: 3px;
+        color: white;
+        background-color: purple;
+        width: 300px;
+        text-align: center;
+        border-radius: 10px;
+        font-family: "Raleway", sans-serif;
+
+    }
+
+    .boxa1 {
+        grid-column-start: 1;
+        text-align: center;
+        background-image: url('https://www.discoverengineering.org/wp-content/uploads/2023/12/mj_11223_3.jpg');
+    }
+
+    .boxa2 {
+        background-image: url(https://t3.ftcdn.net/jpg/06/37/91/58/360_F_637915894_xioRfH3tMwJ7EopQqoGCe5dkzjPYMJLx.jpg);
+        text-align: center;
+        grid-column-start: 2;
+    }
+
+    .boxa3 {
+        grid-column-start: 3;
+        text-align: center;
+        color: whitesmoke;
+        background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEKcwr-kt0vMzo8vf7Qzqscx0Ai6cM2DeLZA&s);
+    }
+
+    .boxa4 {
+        grid-column-start: 1;
+        text-align: center;
+        color: wheat;
+        background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Plasma_globe_60th.jpg/330px-Plasma_globe_60th.jpg);
+    }
+
+    .boxa5 {
+        color: white;
+        background-image: url(https://i.pinimg.com/originals/63/4a/ea/634aeafde3993421dbdf337d49f425dc.gif);
+        grid-column-start: 2;
+    }
+
+    .boxa6 {
+        color: white;
+        background-image: url(https://64.media.tumblr.com/22d78bc700a064d959b704dc639b7f3c/tumblr_mzglzhm03M1rodhzro1_500.gif);
+        grid-column-start: 3;
+    }
+</style>
+
+<body>
+    <div class="headding">
+        <h1> VivaTrivia</h1>
+
+    </div>
+    <h3 class="sh">
+        PHYSICS
+    </h3>
+    <div class="container2">
+
+        <div id="mech" class="box boxa1">
+            <img src="https://i.gifer.com/origin/fe/fe1c50dc500602d74be528323dd50187_w200.gif" alt="mech" height="50px">
+            <h3>Mechanics</h3>
+
+
+        </div>
+
+        <div id ="work" class="box boxa2">
+            <img src="https://www.aplusphysics.com/courses/honors/WEP/images/weightlifter_barbell_squats_hg_wht.gif"
+                alt="workenergy" height="50px">
+            <h3>
+                Work and Energy
+            </h3>
+        </div>
+        <div id="thermo" class="box boxa3">
+            <img src="https://srm-aero.weebly.com/uploads/4/3/0/7/43075523/1st-law_orig.gif" alt="Thermodynamics"
+                height="50px">
+            <h3>Thermodynamics</h3>
+        </div>
+
+        <div id="elect" class="box boxa4">
+            <img src="https://cdn-icons-png.flaticon.com/512/3696/3696305.png" alt="electromagnetic" height="50px">
+            <h3>
+                Electromagneticsm
+            </h3>
+        </div>
+
+        <div id="w&o" class="box boxa5">
+
+            <h3>Waves and Optics</h3>
+        </div>
+
+        <div id="m&p" class="box boxa6">
+            <h3>Modern Physics</h3>
+
+        </div>
+
+    </div>
+  <script>
+    let mec = document.getElementById("mech");
+    mec.addEventListener("click",function(){
+        window.location.href = "mechanical.html";
+    });
+
+    let work = document.getElementById("work");
+    work.addEventListener("click",function(){
+        window.location.href = "workenergy.html"
+    })
+
+    let thermo = document.getElementById("thermo");
+    thermo.addEventListener("click",function(){
+        window.location.href = "thermodynamics.html";
+    });
+
+    let elect = document.getElementById("elect");
+    elect.addEventListener("click",function(){
+        window.location.href = "electromagnetisum.html";
+    });
+
+    let wo = document.getElementById("w&o");
+    wo.addEventListener("click",function(){
+        window.location.href = "w&o.html";
+    });
+
+    let mo = document.getElementById("m&p");
+    mo.addEventListener("click",function(){
+        window.location.href = "modrenphysics.html";
+    });
+
+
+  </script>
+
+</body>
+
+</html>
