@@ -1,19 +1,5 @@
-document.getElementById('loginButton').addEventListener('click', () => {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
 
-    // This is a FAKE login for GitHub Pages.
-    // It just checks if the user typed anything.
-    if (username && password) {
-        alert('Login successful!');
-        // Redirect to the quiz page. Create a quiz.html file for this to work.
-        window.location.href = 'interface.html';
-    } else {
-        alert('Please enter a username and password.');
-    }
-});
-
-const backendUrl = 'https://your-backend-app.herokuapp.com';
+const backendUrl = 'https://vikasvarahala.github.io/vivatriva_vindustry/';
 
 document.getElementById('loginButton').addEventListener('click', async () => {
     const username = document.getElementById('username').value;
@@ -31,3 +17,19 @@ document.getElementById('loginButton').addEventListener('click', async () => {
         alert('Invalid username or password');
     }
 });
+
+document.getElementById('loginButton').addEventListener('click', () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // This is a FAKE login for GitHub Pages.
+    // It just checks if the user typed anything.
+    if (username && password) {
+        alert('Login successful!');
+        // Redirect to the quiz page. Create a quiz.html file for this to work.
+        window.location.href = 'interface.html';
+    } else {
+        alert('Please enter a username and password.');
+    }
+});
+
